@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<config>
+  <tabs>
+    <utilitiestab translate="label" module="storeutilities">
+      <label>Utilities</label>
+      <sort_order>0</sort_order>
+    </utilitiestab>
+  </tabs>
+  <sections>
+    <storeutilitiesinfo translate="label" module="storeutilities">
+      <label>Read Me</label>
+      <tab>utilitiestab</tab>
+      <frontend_type>text</frontend_type>
+      <sort_order>0</sort_order>
+      <show_in_default>1</show_in_default>
+      <show_in_website>1</show_in_website>
+      <show_in_store>1</show_in_store>
+      <groups>
+        <info>
+          <frontend_model>storeutilities/system_config_info</frontend_model>
+          <sort_order>10</sort_order>
+          <show_in_default>1</show_in_default>
+          <show_in_website>1</show_in_website>
+          <show_in_store>1</show_in_store>
+        </info>
+      </groups>
+    </storeutilitiesinfo>
+    <storeutilities_conf module="storeutilities">
+      <label>WSU related settings and more</label>
+      <tab>utilitiestab</tab>
+      <frontend_type>text</frontend_type>
+      <sort_order>1</sort_order>
+      <show_in_default>1</show_in_default>
+      <show_in_website>1</show_in_website>
+      <show_in_store>1</show_in_store>
+      <groups>
+        <general_settings>
+          <label>something here</label>
+          <frontend_type>text</frontend_type>
+          <sort_order>1</sort_order>
+          <show_in_default>1</show_in_default>
+          <show_in_website>1</show_in_website>
+          <show_in_store>1</show_in_store>
+          <expanded>1</expanded>
+          <fields>
+            <active translate="label">
+              <label>Enabled</label>
+              <frontend_type>select</frontend_type>
+              <source_model>adminhtml/system_config_source_yesno</source_model>
+              <sort_order>1</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>1</show_in_store>
+            </active>
+            <debug translate="label">
+              <label>Debug</label>
+              <frontend_type>select</frontend_type>
+              <source_model>adminhtml/system_config_source_yesno</source_model>
+              <sort_order>56</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>1</show_in_store>
+            </debug>
+          </fields>
+        </general_settings>
+      </groups>
+    </storeutilities_conf>
+  </sections>
+</config>

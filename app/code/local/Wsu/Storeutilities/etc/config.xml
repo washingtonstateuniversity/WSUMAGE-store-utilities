@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category    Wsu
+ * @package     Wsu_Storeutilities
+ * @copyright   Copyright (c) 2012+ Wsu. (http://wsu.edu)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+-->
+<config>
+  <modules>
+    <Wsu_Storeutilities>
+      <version>0.1.0</version>
+    </Wsu_Storeutilities>
+  </modules>
+  <global>
+    <resources>
+      <storeutilities_setup>
+        <setup>
+          <module>Wsu_Storeutilities</module>
+          <class>Wsu_Storeutilities_Model_Resource_Setup</class>
+        </setup>
+      </storeutilities_setup>
+    </resources>
+    <blocks>
+      <storeutilities>
+        <class>Wsu_Storeutilities_Block</class>
+      </storeutilities>
+      <!-- <checkout>
+			<class>Wsu_Storeutilities_Block</class>
+		</checkout>-->
+      <checkout>
+        <rewrite>
+          <cart_sidebar>Wsu_Storeutilities_Block_Cart_Sidebar</cart_sidebar>
+          <cart_item_renderer>Wsu_Storeutilities_Block_Cart_Item_Renderer</cart_item_renderer>
+        </rewrite>
+      </checkout>
+		<page>
+			<rewrite>
+				<html_head>Wsu_Storeutilities_Block_Html_Head</html_head>
+			</rewrite>
+		</page>
+    </blocks>
+    <helpers>
+      <storeutilities>
+        <class>Wsu_Storeutilities_Helper</class>
+      </storeutilities>
+      <checkout>
+        <rewrite>
+          <url>Wsu_Storeutilities_Helper_Url</url>
+          <!--<cart>Wsu_Storeutilities_Helper_Cart</cart>-->
+        </rewrite>
+      </checkout>
+    </helpers>
+    <models>
+		<catalog>
+			<rewrite>
+				<product>Wsu_Storeutilities_Model_Product</product>
+			</rewrite>
+		</catalog>
+	</models>
+    
+  </global>
+  <default>
+    <adminhtml>
+      <acl>
+        <resources>
+          <all>
+            <title>Allow Everything</title>
+          </all>
+          <admin>
+            <children>
+              <storeutilities_conf module="storeutilities">
+                <title>General</title>
+                <sort_order>10</sort_order>
+              </storeutilities_conf>
+              <system>
+                <children>
+                  <config>
+                    <children>
+                      <storeutilitiesinfo>
+                        <title>General Info</title>
+                      </storeutilitiesinfo>
+                      <storeutilities_conf>
+                        <title>DiVA tab</title>
+                      </storeutilities_conf>
+                    </children>
+                  </config>
+                </children>
+              </system>
+            </children>
+          </admin>
+        </resources>
+      </acl>
+    </adminhtml>
+  </default>
+  
+  <!--<crontab>
+    <jobs>
+      <storeutilities_emailorders>
+        <schedule>
+          <cron_expr>*/5 * * * *</cron_expr>
+        </schedule>
+        <run>
+          <model>storeutilities/cron::emailOrders</model>
+        </run>
+      </storeutilities_emailorders>
+      <storeutilities_fetch_settlement_reports>
+        <run>
+          <model>storeutilities/observer::fetchReports</model>
+        </run>
+      </storeutilities_fetch_settlement_reports>
+    </jobs>
+  </crontab>
+  <admin>
+    <routers>
+      <adminhtml>
+        <args>
+          <modules>
+            <Wsu_Storeutilities before="Mage_Adminhtml">Wsu_Storeutilities_Adminhtml</Wsu_Storeutilities>
+          </modules>
+        </args>
+      </adminhtml>
+    </routers>
+  </admin>-->
+</config>

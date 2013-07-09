@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category    Wsu
+ * @package     Wsu_Storeutilities
+ * @copyright   Copyright (c) 2012+ Wsu. (http://wsu.edu)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+-->
+<config>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <storeutilities_conf translate="title" module="storeutilities">
+                                        <title>General  Configuration</title>
+                                        <sort_order>100</sort_order>
+                                    </storeutilities_conf>
+                                    <storeutilitiesinfo translate="title" module="storeutilities">
+                                        <title>General Info</title>
+                                        <sort_order>100</sort_order>
+                                    </storeutilitiesinfo>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                 </children>
+            </admin>
+        </resources>
+    </acl>
+    <menu>
+        <xmlconnect> <!-- <xmlconnect> to match adminhtml.xml file of Mage_XmlConnect module -->
+            <depends>
+                <module>HideMe</module> <!-- Fake dependance to hide tab -->
+            </depends>
+        </xmlconnect>
+        <system>
+            <children>
+                <convert> <!-- <convert> to match adminhtml.xml file of Mage_Adminhtml module -->
+                    <children>
+                        <gui> <!-- Same as <convert> -->
+                            <depends>
+                                <module>HideMe</module> <!-- Fake dependance to hide menu item -->
+                            </depends>
+                        </gui>
+                        <profiles>
+                            <depends>
+                                <module>HideMe</module> <!-- Fake dependance to hide menu item -->
+                            </depends>
+                        </profiles>
+                    </children>
+                </convert>
+            </children>
+        </system>
+    </menu>
+</config>
