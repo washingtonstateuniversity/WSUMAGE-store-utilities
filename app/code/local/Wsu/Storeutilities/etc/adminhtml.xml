@@ -49,23 +49,23 @@
                 <module>HideMe</module> <!-- Fake dependance to hide tab -->
             </depends>
         </xmlconnect>
-        <system>
+        <!--<system>
             <children>
-                <convert> <!-- <convert> to match adminhtml.xml file of Mage_Adminhtml module -->
+                <convert>
                     <children>
-                        <gui> <!-- Same as <convert> -->
+                        <gui> 
                             <depends>
-                                <module>HideMe</module> <!-- Fake dependance to hide menu item -->
+                                <module>HideMe</module> 
                             </depends>
                         </gui>
                         <profiles>
                             <depends>
-                                <module>HideMe</module> <!-- Fake dependance to hide menu item -->
+                                <module>HideMe</module> 
                             </depends>
                         </profiles>
                     </children>
                 </convert>
             </children>
-        </system>
+        </system>-->
     </menu>
 </config>
