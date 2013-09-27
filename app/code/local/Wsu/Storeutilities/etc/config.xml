@@ -27,9 +27,9 @@
   <admin>
 	<layout>
 		<updates>
-			<StructuredData>
+			<storeutilities>
 				<file>storeutilities.xml</file>
-			</StructuredData>
+			</storeutilities>
 		</updates>
 	</layout>
   </admin>
@@ -130,6 +130,13 @@
           </admin>
         </resources>
       </acl>
+	  	<layout>
+			<updates>
+				<storeutilities>
+					<file>storeutilities.xml</file>
+				</storeutilities>
+			</updates>
+		</layout>
     </adminhtml>
   </default>
   

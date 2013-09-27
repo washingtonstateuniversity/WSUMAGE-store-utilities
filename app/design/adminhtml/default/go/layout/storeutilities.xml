@@ -30,29 +30,16 @@
 <!--
 Default layout, loads most of the pages
 -->
-    <default translate="label" module="page">
-		<!--<adminhtml>
-			<reference name="head">
-				<action method="addItem"><type>cdn_js</type><name>//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js</name>
-						<params/><if/><cond/><window_obj>jQuery</window_obj><local_path>/js/jquery-1.10.2.min.js</local_path></action>
-				<action method="addItem"><type>cdn_js</type><name>//code.jquery.com/jquery-migrate-1.2.1.min.js</name>
-						<params/><if/><cond/><window_obj>jQuery</window_obj><local_path>/js/jquery-migrate-1.2.1.min.js</local_path></action>
-				<action method="addItem"><type>cdn_js</type><name>/js/noconflict.js</name></action>											
-			</reference>
-		<adminhtml>
--->
-        <reference name="head">
-            <action method="removeItem"><type>js</type><name>mage/adminhtml/sales.js</name></action>
-            <action method="addItem"><type>skin_js</type><script>js/sales.js</script></action>
-            <action method="removeItem"><type>js_css</type><name>calendar/calendar-win2k-1.css</name></action>
-            <action method="addItem"><type>skin_css</type><name>calendar.css</name><params/></action>
+    <default>
+	<adminhtml>
+		<reference name="head">
 			<action method="addItem"><type>cdn_js</type><name>//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js</name>
 					<params/><if/><cond/><window_obj>jQuery</window_obj><local_path>/js/jquery-1.10.2.min.js</local_path></action>
 			<action method="addItem"><type>cdn_js</type><name>//code.jquery.com/jquery-migrate-1.2.1.min.js</name>
 					<params/><if/><cond/><window_obj>jQuery</window_obj><local_path>/js/jquery-migrate-1.2.1.min.js</local_path></action>
-			<action method="addItem"><type>cdn_js</type><name>/js/noconflict.js</name></action>		
-        </reference>
-
+			<action method="addItem"><type>cdn_js</type><name>/js/noconflict.js</name></action>											
+		</reference>
+	<adminhtml>
 		<!-- Mage_GoogleAnalytics
 		<reference name="head">
 			<block type="core/text" name="google.cdn.jquery">
