@@ -62,7 +62,7 @@ class  Wsu_Storeutilities_Block_Adminhtml_Page_Head extends Mage_Adminhtml_Block
      */
     public function addItem($type, $name, $params=null, $if=null, $cond=null,$window_obj="",$local_path="")
     {
-        if ($type==='skin_css' && empty($params)) {
+        if (($type==='skin_css'||$type==='cdn_css') && empty($params)) {
             $params = 'media="all"';
         }
         $this->_data['items'][$type.'/'.$name] = array(
@@ -85,11 +85,24 @@ class  Wsu_Storeutilities_Block_Adminhtml_Page_Head extends Mage_Adminhtml_Block
      * @param string $params
      * @return Mage_Page_Block_Html_Head
      */
-    public function addCdnJs($name, $params=null, $if=null, $cond=null,$window_obj="",$local_path="")
-    {
+    public function addCdnJs($name, $params=null, $if=null, $cond=null,$window_obj="",$local_path=""){
         $this->addItem('cdn_js', $name, $params, $if=null, $cond=null,$window_obj="",$local_path="");
         return $this;
     }
+
+    /**
+     * Add CSS file to HEAD entity
+     *
+     * @param string $name
+     * @param string $params
+     * @return Mage_Page_Block_Html_Head
+     */
+    public function addCdn_css($name, $params=null, $if=null, $cond=null,$window_obj="",$local_path=""){
+        $this->addItem('cdn_css', $name, $params, $if=null, $cond=null,$window_obj="",$local_path="");
+        return $this;
+    }
+
+
 
 
     /**
@@ -109,8 +122,7 @@ class  Wsu_Storeutilities_Block_Adminhtml_Page_Head extends Mage_Adminhtml_Block
      * @param string $cond
      * @return Mage_Page_Block_Html_Head
      */
-    public function addExternalItem($type, $name, $params=null, $if=null, $cond=null)
-    {
+    public function addExternalItem($type, $name, $params=null, $if=null, $cond=null){
     	parent::addItem($type, $name, $params, $if, $cond);
     }
 
@@ -182,6 +194,12 @@ class  Wsu_Storeutilities_Block_Adminhtml_Page_Head extends Mage_Adminhtml_Block
             if (!empty($items['cdn_js'])) {
                 $html .= $this->_prepareOtherHtmlHeadElements($items['cdn_js']) . "\n";
             }
+            // cdn JS first
+            if (!empty($items['cdn_css'])) {
+                $html .= $this->_prepareOtherHtmlHeadElements($items['cdn_css']) . "\n";
+            }
+
+
 
             // static and skin javascripts
             $html .= $this->_prepareStaticAndSkinElements('<script type="text/javascript" src="%s"%s></script>' . "\n",
@@ -244,6 +262,9 @@ class  Wsu_Storeutilities_Block_Adminhtml_Page_Head extends Mage_Adminhtml_Block
                 $lines[$itemIf]['other'][] = sprintf('<script type="text/javascript" src="%s" %s></script>', $href, $params);
                 break;               
           	case 'external_css':
+                $lines[$itemIf]['other'][] = sprintf('<link rel="stylesheet" type="text/css" href="%s" %s/>', $href, $params);
+                break;
+          	case 'cdn_css':
                 $lines[$itemIf]['other'][] = sprintf('<link rel="stylesheet" type="text/css" href="%s" %s/>', $href, $params);
                 break;
             case 'cdn_js':
