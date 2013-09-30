@@ -33,18 +33,6 @@
 		</updates>
 	</layout>
   </admin>
-	<stores>
-		<admin>
-			<design>
-				<package>
-					<name>default</name>
-				</package>
-				<theme>
-					<default>wsu_base</default>
-				</theme>
-			</design>
-    	</admin>
-	</stores>
   <global>
     <resources>
       <storeutilities_setup>
