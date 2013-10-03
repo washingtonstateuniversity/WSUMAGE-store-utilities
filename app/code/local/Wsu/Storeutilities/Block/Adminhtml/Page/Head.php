@@ -26,11 +26,7 @@
 
 
 /**
- * Inchoo Xternal Html page block
- *
- * @category   Inchoo
- * @package    Inchoo_Xternal
- * @author     Vedran Subotic, Inchoo <web@inchoo.net>
+Maybe this needs to be extending/includes from the Wsu_Storeutilities_Block_Html_Head
  */
 class  Wsu_Storeutilities_Block_Adminhtml_Page_Head extends Mage_Adminhtml_Block_Page_Head
 {
@@ -183,7 +179,10 @@ class  Wsu_Storeutilities_Block_Adminhtml_Page_Head extends Mage_Adminhtml_Block
             if (!empty($if)) {
                 $html .= '<!--[if '.$if.']>'."\n";
             }
-
+			// cdn CSS first
+            if (!empty($items['cdn_css'])) {
+                $html .= $this->_prepareOtherHtmlHeadElements($items['cdn_css']) . "\n";
+            }
             // static and skin css
             $html .= $this->_prepareStaticAndSkinElements('<link rel="stylesheet" type="text/css" href="%s"%s />' . "\n",
                 empty($items['js_css']) ? array() : $items['js_css'],
@@ -194,12 +193,6 @@ class  Wsu_Storeutilities_Block_Adminhtml_Page_Head extends Mage_Adminhtml_Block
             if (!empty($items['cdn_js'])) {
                 $html .= $this->_prepareOtherHtmlHeadElements($items['cdn_js']) . "\n";
             }
-            // cdn JS first
-            if (!empty($items['cdn_css'])) {
-                $html .= $this->_prepareOtherHtmlHeadElements($items['cdn_css']) . "\n";
-            }
-
-
 
             // static and skin javascripts
             $html .= $this->_prepareStaticAndSkinElements('<script type="text/javascript" src="%s"%s></script>' . "\n",

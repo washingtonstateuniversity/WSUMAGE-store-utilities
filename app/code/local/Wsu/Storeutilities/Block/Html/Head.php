@@ -26,11 +26,7 @@
 
 
 /**
- * Inchoo Xternal Html page block
- *
- * @category   Inchoo
- * @package    Inchoo_Xternal
- * @author     Vedran Subotic, Inchoo <web@inchoo.net>
+
  */
 class Wsu_Storeutilities_Block_Html_Head extends Mage_Page_Block_Html_Head
 {
@@ -90,7 +86,17 @@ class Wsu_Storeutilities_Block_Html_Head extends Mage_Page_Block_Html_Head
         $this->addItem('cdn_js', $name, $params, $if=null, $cond=null,$window_obj="",$local_path="");
         return $this;
     }
-
+    /**
+     * Add CSS file to HEAD entity
+     *
+     * @param string $name
+     * @param string $params
+     * @return Mage_Page_Block_Html_Head
+     */
+    public function addCdn_css($name, $params=null, $if=null, $cond=null,$window_obj="",$local_path=""){
+        $this->addItem('cdn_css', $name, $params, $if=null, $cond=null,$window_obj="",$local_path="");
+        return $this;
+    }
 
     /**
      * Add HEAD External Item
@@ -171,6 +177,10 @@ class Wsu_Storeutilities_Block_Html_Head extends Mage_Page_Block_Html_Head
             if (!empty($if)) {
                 $html .= '<!--[if '.$if.']>'."\n";
             }
+			// cdn CSS first
+            if (!empty($items['cdn_css'])) {
+                $html .= $this->_prepareOtherHtmlHeadElements($items['cdn_css']) . "\n";
+            }
 
             // static and skin css
             $html .= $this->_prepareStaticAndSkinElements('<link rel="stylesheet" type="text/css" href="%s"%s />' . "\n",
@@ -244,6 +254,9 @@ class Wsu_Storeutilities_Block_Html_Head extends Mage_Page_Block_Html_Head
                 $lines[$itemIf]['other'][] = sprintf('<script type="text/javascript" src="%s" %s></script>', $href, $params);
                 break;               
           	case 'external_css':
+                $lines[$itemIf]['other'][] = sprintf('<link rel="stylesheet" type="text/css" href="%s" %s/>', $href, $params);
+                break;
+          	case 'cdn_css':
                 $lines[$itemIf]['other'][] = sprintf('<link rel="stylesheet" type="text/css" href="%s" %s/>', $href, $params);
                 break;
             case 'cdn_js':
