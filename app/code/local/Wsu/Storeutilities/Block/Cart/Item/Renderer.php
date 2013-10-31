@@ -3,8 +3,7 @@
 class Wsu_Storeutilities_Block_Cart_Item_Renderer extends Mage_Checkout_Block_Cart_Item_Renderer{
 	
 	//getItemUrl
-	
-	
+
     public function getProductUrl(){	
 		$product = $this->getProduct();
         $option  = $this->getItem()->getOptionByCode('product_type');

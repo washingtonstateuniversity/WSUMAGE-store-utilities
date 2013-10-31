@@ -1,20 +1,18 @@
 <?php
-class Wsu_Storeutilities_Block_System_Config_Info extends Mage_Adminhtml_Block_Abstract
-    implements Varien_Data_Form_Element_Renderer_Interface
-{
+/**
+ * @var $this Wsu_AdminTheme_Block_Adminhtml_System_Config_Fieldset_Hint
+ */
+?>
+<div class="box">
+    <div style="background:url('#') no-repeat left center;padding-left:55px;min-height:42px;">
+        <a href="https://github.com/washingtonstateuniversity/WSUMAGE-extstub" target="_blank" style="float:right;">
+            <img src="#" alt="Fork me on GitHub" title="Fork me on GitHub" />
+        </a>
+        <h4><?php echo $this->helper('wsu_stub')->__('Wsu Stub is a shell prime for growth.'); ?></h4>
+        <p style="margin-bottom:0;"><?php echo $this->helper('wsu_stub')->__('Full overview available'); ?> <a href="<?php echo $this->escapeHtml($this->helper('wsu_stub')->__('#')); ?>" target="_blank"><?php echo $this->helper('wsu_stub')->__('here'); ?></a>.</p>
+    </div>
     
-    /**
-     * Render fieldset html
-     *
-     * @param Varien_Data_Form_Element_Abstract $element
-     * @return string
-     */
-    public function render(Varien_Data_Form_Element_Abstract $element)
-    {
-		$logo = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN)."adminhtml/default/default/images/wsu/wsu_default.png";
-		
-		//note we would want to get admins marked as help contact.  Add that to this base
-         $html = '<img src="'.$logo.'" style="width:200px;float:left;" />
+    <img src="#" style="width:200px;float:left;" />
 		 		<div style="padding-left:215px;">
                     <h2>Store utilities</h2>
                     <p>This is the general utility module that other modules can be grafted of.</p>
@@ -77,8 +75,5 @@ class Wsu_Storeutilities_Block_System_Config_Info extends Mage_Adminhtml_Block_A
 						</ul>
 					</address>
 
-                </div>';        
-        
-        return $html;
-    }
-}
+                </div>
+</div>

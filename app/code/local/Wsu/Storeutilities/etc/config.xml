@@ -1,51 +1,17 @@
 <?xml version="1.0"?>
-<!--
-/**
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Academic Free License (AFL 3.0)
- * that is bundled with this package in the file LICENSE_AFL.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/afl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@magentocommerce.com so we can send you a copy immediately.
- *
- * @category    Wsu
- * @package     Wsu_Storeutilities
- * @copyright   Copyright (c) 2012+ Wsu. (http://wsu.edu)
- * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
- */
--->
 <config>
   <modules>
     <Wsu_Storeutilities>
       <version>0.1.0</version>
     </Wsu_Storeutilities>
   </modules>
-  <admin>
-	<layout>
-		<updates>
-			<storeutilities>
-				<file>storeutilities.xml</file>
-			</storeutilities>
-		</updates>
-	</layout>
-  </admin>
+
   <global>
-    <resources>
-      <storeutilities_setup>
-        <setup>
-          <module>Wsu_Storeutilities</module>
-          <class>Wsu_Storeutilities_Model_Resource_Setup</class>
-        </setup>
-      </storeutilities_setup>
-    </resources>
+
     <blocks>
-      <storeutilities>
+      <wsu_storeutilities>
         <class>Wsu_Storeutilities_Block</class>
-      </storeutilities>
+      </wsu_storeutilities>
       <!-- <checkout>
 			<class>Wsu_Storeutilities_Block</class>
 		</checkout>-->
@@ -60,11 +26,11 @@
 				<html_head>Wsu_Storeutilities_Block_Html_Head</html_head>
 			</rewrite>
 		</page>
-	<adminhtml><!-- rewrite admin head block --> 
-        <rewrite>
-            <page_head>Wsu_Storeutilities_Block_Adminhtml_Page_Head</page_head>
-        </rewrite>
-    </adminhtml>
+		<adminhtml><!-- rewrite admin head block --> 
+			<rewrite>
+				<page_head>Wsu_Storeutilities_Block_Adminhtml_Page_Head</page_head>
+			</rewrite>
+		</adminhtml>
 
     </blocks>
     <helpers>
@@ -85,11 +51,38 @@
 			</rewrite>
 		</catalog>
 	</models>
-    
+    <resources>
+      <storeutilities_setup>
+        <setup>
+          <module>Wsu_Storeutilities</module>
+          <class>Wsu_Storeutilities_Model_Resource_Setup</class>
+        </setup>
+      </storeutilities_setup>
+    </resources>
   </global>
+  <admin>
+	<layout>
+		<updates>
+			<storeutilities>
+				<file>storeutilities.xml</file>
+			</storeutilities>
+		</updates>
+	</layout>
+	
+	<routers>
+		<adminhtml>
+			<args>
+				<modules>
+					<wsu_stub before="Mage_Adminhtml">Wsu_Stub_Adminhtml</wsu_stub>
+				</modules>
+			</args>
+		</adminhtml>
+	</routers>
+	
+  </admin>
   <default>
     <adminhtml>
-      <acl>
+     <!-- <acl>
         <resources>
           <all>
             <title>Allow Everything</title>
@@ -105,10 +98,10 @@
                   <config>
                     <children>
                       <storeutilitiesinfo>
-                        <title>General Info</title>
+                        <title>Store Utilities Help</title>
                       </storeutilitiesinfo>
                       <storeutilities_conf>
-                        <title>DiVA tab</title>
+                        <title>Store Utilities tab</title>
                       </storeutilities_conf>
                     </children>
                   </config>
@@ -117,7 +110,7 @@
             </children>
           </admin>
         </resources>
-      </acl>
+      </acl>-->
 	  	<layout>
 			<updates>
 				<storeutilities>
