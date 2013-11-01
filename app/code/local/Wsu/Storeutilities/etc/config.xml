@@ -73,7 +73,7 @@
 		<adminhtml>
 			<args>
 				<modules>
-					<wsu_stub before="Mage_Adminhtml">Wsu_Stub_Adminhtml</wsu_stub>
+					<wsu_storeutilities before="Mage_Adminhtml">Wsu_Storeutilities_Adminhtml</wsu_storeutilities>
 				</modules>
 			</args>
 		</adminhtml>
