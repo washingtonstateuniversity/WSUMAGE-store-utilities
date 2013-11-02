@@ -45,6 +45,9 @@
       </checkout>
     </helpers>
     <models>
+	  <wsu_storeutilities>
+        <class>Wsu_Storeutilities_Model</class>
+      </wsu_storeutilities>
 		<catalog>
 			<rewrite>
 				<product>Wsu_Storeutilities_Model_Product</product>
