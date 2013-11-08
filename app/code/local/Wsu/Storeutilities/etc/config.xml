@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <config>
   <modules>
-    <Wsu_Storeutilities>
+    <wsu_storeutilities>
       <version>0.1.0</version>
-    </Wsu_Storeutilities>
+    </wsu_storeutilities>
   </modules>
   <global>
     <blocks>
@@ -78,7 +78,35 @@
       </adminhtml>
     </routers>
   </admin>
+  <frontend>
+    <routers>
+      <wsu_storeutilities>
+        <use>standard</use>
+        <args>
+          <module>Wsu_Storeutilities</module>
+          <frontName>wsu_storeutilities</frontName>
+        </args>
+      </wsu_storeutilities>
+    </routers>
+  </frontend>
+  <adminhtml>
+    <events>
+      <adminhtml_widget_container_html_before>
+        <observers>
+          <wsu_storeutilities_injectStoreutilitiesButton>
+            <class>wsu_storeutilities/observer</class>
+            <method>injectStoreutilitiesButton</method>
+          </wsu_storeutilities_injectStoreutilitiesButton>
+        </observers>
+      </adminhtml_widget_container_html_before>
+    </events>
+  </adminhtml>
   <default>
+    <wsu_storeutilities>
+      <settings>
+        <active>0</active>
+      </settings>
+    </wsu_storeutilities>
     <adminhtml>
       <!-- <acl>
         <resources>
