@@ -99,6 +99,15 @@
           </wsu_storeutilities_injectStoreutilitiesButton>
         </observers>
       </adminhtml_widget_container_html_before>
+		<adminhtml_block_html_before>
+			<observers>
+				<wsu_storeutilities_changeattributeset>
+					<type>singleton</type>
+					<class>wsu_storeutilities/observer</class>
+					<method>addMassactionToProductGrid</method>
+				</wsu_storeutilities_changeattributeset>
+			</observers>
+		</adminhtml_block_html_before>
     </events>
   </adminhtml>
   <default>
