@@ -6,6 +6,51 @@
  * @author      jeremybass <jeremy.bass@wsu.edu>
  */
 class Wsu_Storeutilities_Model_Observer{
+	
+	
+	public function minfyHtml(){
+		//$output = $this->getLayout()->getOutput()."TEST!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
+		//Mage::getSingleton('core/translate_inline')
+		//				->processResponseBody($output);
+		//$this->getResponse()->appendBody($output);
+	}
+	
+    public function simpleHtmlMinify($observer) {
+        if (Mage::getStoreConfig('storeutilities_conf/html/minify_html_output')) {
+
+            // Fetches the current event
+            $event = $observer->getEvent();
+            $controller = $event->getControllerAction();
+            $allHtml = $controller->getResponse()->getBody();
+
+			$re = '%# Collapse whitespace everywhere but in blacklisted elements.
+				(?>             # Match all whitespans other than single space.
+				  [^\S ]\s*     # Either one [\t\r\n\f\v] and zero or more ws,
+				| \s{2,}        # or two or more consecutive-any-whitespace.
+				) # Note: The remaining regex consumes no text at all...
+				(?=             # Ensure we are not in a blacklist tag.
+				  [^<]*+        # Either zero or more non-"<" {normal*}
+				  (?:           # Begin {(special normal*)*} construct
+					<           # or a < starting a non-blacklist tag.
+					(?!/?(?:textarea|pre|script)\b)
+					[^<]*+      # more non-"<" {normal*}
+				  )*+           # Finish "unrolling-the-loop"
+				  (?:           # Begin alternation group.
+					<           # Either a blacklist start tag.
+					(?>textarea|pre|script)\b
+				  | \z          # or end of file.
+				  )             # End alternation group.
+				)  # If we made it here, we are not in a blacklist tag.
+				%Six';
+			$content = preg_replace($re, " ", $allHtml);
+
+
+
+            $controller->getResponse()->setBody($content);
+        }
+    }
+
+	
     public function injectStoreutilitiesButton($observer) {
         $block = $observer->getEvent()->getBlock();
         if ($block instanceof Mage_Adminhtml_Block_Customer_Edit) {

@@ -40,6 +40,11 @@
           <!--<cart>Wsu_Storeutilities_Helper_Cart</cart>-->
         </rewrite>
       </checkout>
+		<core>
+			<rewrite>
+				<data>Wsu_Storeutilities_Helper_Core_Data</data>
+			</rewrite>
+		</core>
     </helpers>
     <models>
       <wsu_storeutilities>
@@ -88,6 +93,25 @@
         </args>
       </wsu_storeutilities>
     </routers>
+	<events>
+	<controller_front_send_response_before>
+        <observers>
+          <wsu_storeutilities_minfyHtml>
+            <class>wsu_storeutilities/observer</class>
+            <method>minfyHtml</method>
+          </wsu_storeutilities_minfyHtml>
+        </observers>
+	</controller_front_send_response_before>
+	<controller_action_postdispatch>
+		<observers>
+			<wsu_storeutilities_simpleHtmlMinify>
+				<type>singleton</type>
+				<class>wsu_storeutilities/observer</class>
+				<method>simpleHtmlMinify</method>
+			</wsu_storeutilities_simpleHtmlMinify>
+		</observers>
+	</controller_action_postdispatch>
+	</events>
   </frontend>
   <adminhtml>
     <events>
@@ -115,6 +139,11 @@
       <settings>
         <active>0</active>
       </settings>
+	  <storeutilities_conf>
+		  <html>
+		  	<minify_html_output>1</minify_html_output>
+		  </html>
+	  </storeutilities_conf>
     </wsu_storeutilities>
     <adminhtml>
       <!-- <acl>
