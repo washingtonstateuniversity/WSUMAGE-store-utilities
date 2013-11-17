@@ -1,7 +1,4 @@
 <?php
-/**
-
-*/
 class Wsu_Storeutilities_Block_Html_Head extends Mage_Page_Block_Html_Head {
     /**
      * Initialize template

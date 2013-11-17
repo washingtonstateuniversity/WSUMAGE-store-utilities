@@ -4,30 +4,29 @@
  */
 ?>
 <div class="box">
-    <div style="background:url('#') no-repeat left center;padding-left:55px;min-height:42px;">
+    <div style="background:url('<?=Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)?>wsu-brand/bug-logotype.svg') no-repeat left top;padding-left:59px;min-height:59px;">
         <a href="https://github.com/washingtonstateuniversity/WSUMAGE-storeutilities" target="_blank" style="float:right;">
-            <img src="#" alt="Fork me on GitHub" title="Fork me on GitHub" />
+            <img src="<?=Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)?>wsu-brand/Github-fork-icon.svg" alt="Fork me on GitHub" title="Fork me on GitHub" />
         </a>
-        <h4><?php echo $this->helper('storeutilities')->__('Wsu storeutilities is a shell prime for growth.'); ?></h4>
+        <h4><?=$this->helper('storeutilities')->__('Store Utilities is the general utility module that other modules can be grafted of.'); ?></h4>
         <p style="margin-bottom:0;"><?php echo $this->helper('storeutilities')->__('Full overview available'); ?> <a href="<?php echo $this->escapeHtml($this->helper('storeutilities')->__('#')); ?>" target="_blank"><?php echo $this->helper('storeutilities')->__('here'); ?></a>.</p>
     </div>
-    
-    <img src="#" style="width:200px;float:left;" />
-		 		<div style="padding-left:215px;">
-                    <h2>Store utilities</h2>
-                    <p>This is the general utility module that other modules can be grafted of.</p>
-				</div>
-				<div style="clear:left;">
-					<hr/>
-					<h3>Extarnal JS/CS:</h3>
-					<p><em><strong>addExternalItem</strong></em> also do the same as addItem but has 3 new types:</p>
-					<ul>
-						<li>external_css</li>
-						<li>external_js</li>
-						<li>cdn_js</li>
-					</ul>
-					<h4>Examples</h4>
-					<code><pre>
+
+	<p style="margin-bottom:0;"><?php echo $this->helper('storeutilities')->__('The Store utility extension aims to provide more core-ish functions and flow that surpasses the defaults of Magento.  This extension it designed to the be base of other extensions so they can predictably depend on access to the tools this Store utility extension provides'); ?>.</p>
+</div>
+
+
+<div class="box">
+        
+    <h3>Extarnal JS/CSS:</h3>
+    <p><em><strong>addExternalItem</strong></em> also do the same as addItem but has 3 new types:</p>
+    <ul>
+        <li>external_css</li>
+        <li>external_js</li>
+        <li>cdn_js</li>
+    </ul>
+    <br/>
+<div class="entry-edit-head collapseable"><a class="open" id="storeutilities_conf_html-head" onclick="Fieldset.toggleCollapse('storeutilities_conf_html'); return false;" href="#">Examples</a></div><fieldset class="config collapseable" id="storeutilities_conf_html"><legend>Extarnal JS/CSS Examples</legend>        <code><pre>
 &lt;layout version=&quot;0.1.0&quot;&gt;
     &lt;default&gt;
         &lt;reference name=&quot;head&quot;&gt;
@@ -87,33 +86,21 @@
         &lt;/reference&gt;
     &lt;/catalog_product_view&gt;
 &lt;/layout&gt;
-					</pre></code>
-				
-					<h4>Notes:</h4>
-					<p>With <strong><em>cdn_js</em></strong> You\'ll want to note that <strong>&lt;params/&gt;&lt;if/&gt;&lt;cond/&gt;</strong> nodes must be there and before <em><strong>window_obj</strong></em> or <em><strong>local_path</strong></em>.  <em><strong>window_obj</strong></em> is the dom object relative to the javascript window object.  IE: window.jQuery is the target so you would load <strong>&lt;window_obj&gt;jQuery&lt;/window_obj&gt;</strong>.
-				
-					<hr/>
-					<h3>Contact</h3>
-					<address>
-						<h4 style="clear:left;">Primary help contact information:</h4>
-						<ul class="vcard">
-							<li class="fn">Jeremy Bass</li>
-							<li>University Publishing</li>
-							<li class="tel">Phone: 5-8820</li>
-							<li class="email"><a href="mailto:jeremy.bass@wsu.edu?subject=General%20help%20-%20Magento">Send Email</a></li>
-						</ul>
-						<hr/>
-						<h4 style="clear:left;">General contact information:</h4>
-						<ul class="vcard">
-							<li class="fn">University Publishing</li>
-							<li class="adr">Washington State University,<br/>
-								<span class="street-address">PO Box 645910</span>,<br/>
-								<span class="region">Pullman, WA</span>,
-								<span class="postal-code">99164-5910</span>
-								<span class="country-name">USA</span>
-							</li>
-						</ul>
-					</address>
+    </pre></code></fieldset><script type="text/javascript">//<![CDATA[
+    Fieldset.applyCollapse('storeutilities_conf_html');
+    //]]></script>
 
-                </div>
+    <h4>Notes:</h4>
+    <p>With <strong><em>cdn_js</em></strong> You'll want to note that <strong>&lt;params/&gt;&lt;if/&gt;&lt;cond/&gt;</strong> nodes must be there and before <em><strong>window_obj</strong></em> or <em><strong>local_path</strong></em>.  <em><strong>window_obj</strong></em> is the dom object relative to the javascript window object.  IE: window.jQuery is the target so you would load <strong>&lt;window_obj&gt;jQuery&lt;/window_obj&gt;</strong>.
+
+</div>
+<div class="box">
+        
+    <h3>jQuery:</h3>
+    <p>Loads jQuery if set.</p>
+</div>
+<div class="box">
+        
+    <h3>LessCSS:</h3>
+    <p>Less for CSS is able to be used.  Ensure that you change your layout xml files to use .less instead of .css where it's needed. For more information please look to <a href="http://lesscss.org/" target="_blank">Less documentation</a> on how to write your files.  Since this uses the <a href="https://github.com/leafo/lessphp" target="_blank">Lessphp</a> there is no client side building that could slow the user experience down.  This also means that you have this installed but it was not necessary to install the server level less compiler.</p>
 </div>

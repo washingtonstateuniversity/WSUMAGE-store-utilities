@@ -1,5 +1,5 @@
 <?php
-require_once 'Mage/Checkout/controllers/CartController.php';
+require_once 'Mage/Checkout/controllers/CartController.php'; //correct this!!!
 class Wsu_Storeutilities_CartController extends Mage_Checkout_CartController {
     /**
      * Add product to shopping cart action

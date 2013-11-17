@@ -1,9 +1,4 @@
 <?php
-/**
- * Checkout url helper
- *
- * @author      Magento Core Team <core@magentocommerce.com>
- */
 class Wsu_Storeutilities_Helper_Url extends Mage_Checkout_Helper_Url {
     /**
      * Retrieve shopping cart url

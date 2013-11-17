@@ -40,11 +40,11 @@
           <!--<cart>Wsu_Storeutilities_Helper_Cart</cart>-->
         </rewrite>
       </checkout>
-		<core>
-			<rewrite>
-				<data>Wsu_Storeutilities_Helper_Core_Data</data>
-			</rewrite>
-		</core>
+      <core>
+        <rewrite>
+          <data>Wsu_Storeutilities_Helper_Core_Data</data>
+        </rewrite>
+      </core>
     </helpers>
     <models>
       <wsu_storeutilities>
@@ -55,6 +55,11 @@
           <product>Wsu_Storeutilities_Model_Product</product>
         </rewrite>
       </catalog>
+      <core>
+        <rewrite>
+          <design_package>Wsu_Storeutilities_Model_Design_Package</design_package>
+        </rewrite>
+      </core>
     </models>
     <resources>
       <storeutilities_setup>
@@ -64,6 +69,17 @@
         </setup>
       </storeutilities_setup>
     </resources>
+	<events>	
+		<admin_system_config_changed_section_wsu_storeutilities_conf>
+			<observers>
+				<wsu_storeutilities_admin_predispatch>
+					<class>Wsu_Storeutilities_Model_Adminhtml_Observer</class>
+					<method>cleanConfigCache</method>
+				</wsu_storeutilities_admin_predispatch>
+			</observers>
+		</admin_system_config_changed_section_wsu_storeutilities_conf>
+	</events>
+	
   </global>
   <admin>
     <layout>
@@ -93,8 +109,8 @@
         </args>
       </wsu_storeutilities>
     </routers>
-	<events>
-	<!--<controller_front_send_response_before>
+    <events>
+      <!--<controller_front_send_response_before>
         <observers>
           <wsu_storeutilities_minfyHtml>
             <class>wsu_storeutilities/observer</class>
@@ -102,19 +118,34 @@
           </wsu_storeutilities_minfyHtml>
         </observers>
 	</controller_front_send_response_before>-->
-	<controller_action_postdispatch>
-		<observers>
-			<wsu_storeutilities_simpleHtmlMinify>
-				<type>singleton</type>
-				<class>wsu_storeutilities/observer</class>
-				<method>simpleHtmlMinify</method>
-			</wsu_storeutilities_simpleHtmlMinify>
-		</observers>
-	</controller_action_postdispatch>
-	</events>
+      <controller_action_postdispatch>
+        <observers>
+          <wsu_storeutilities_simpleHtmlMinify>
+            <type>singleton</type>
+            <class>wsu_storeutilities/observer</class>
+            <method>simpleHtmlMinify</method>
+          </wsu_storeutilities_simpleHtmlMinify>
+        </observers>
+      </controller_action_postdispatch>
+    </events>
+      <layout>
+        <updates>
+          <wsu_storeutilities>
+            <file>wsu/storeutilities.xml</file>
+          </wsu_storeutilities>
+        </updates>
+      </layout>
   </frontend>
   <adminhtml>
+	<layout>
+		<updates>
+			<wsu_storeutilities>
+				<file>wsu/storeutilities.xml</file>
+			</wsu_storeutilities>
+		</updates>
+	</layout>
     <events>
+
       <adminhtml_widget_container_html_before>
         <observers>
           <wsu_storeutilities_injectStoreutilitiesButton>
@@ -123,42 +154,52 @@
           </wsu_storeutilities_injectStoreutilitiesButton>
         </observers>
       </adminhtml_widget_container_html_before>
-		<adminhtml_block_html_before>
-			<observers>
-				<wsu_storeutilities_changeattributeset>
-					<type>singleton</type>
-					<class>wsu_storeutilities/observer</class>
-					<method>addMassactionToProductGrid</method>
-				</wsu_storeutilities_changeattributeset>
-			</observers>
-		</adminhtml_block_html_before>
-		
-		<http_response_send_before>
-			<observers>
-				<wsu_storeutilities_simpleHtmlMinify>
-					<type>singleton</type>
-					<class>wsu_storeutilities/observer</class>
-					<method>admin_simpleHtmlMinify</method>
-				</wsu_storeutilities_simpleHtmlMinify>
-			</observers>
-		</http_response_send_before>
-		
+      <adminhtml_block_html_before>
+        <observers>
+          <wsu_storeutilities_changeattributeset>
+            <type>singleton</type>
+            <class>wsu_storeutilities/observer</class>
+            <method>addMassactionToProductGrid</method>
+          </wsu_storeutilities_changeattributeset>
+        </observers>
+      </adminhtml_block_html_before>
+      <http_response_send_before>
+        <observers>
+          <wsu_storeutilities_simpleHtmlMinify>
+            <type>singleton</type>
+            <class>wsu_storeutilities/observer</class>
+            <method>admin_simpleHtmlMinify</method>
+          </wsu_storeutilities_simpleHtmlMinify>
+        </observers>
+      </http_response_send_before>
     </events>
   </adminhtml>
-  
   <default>
     <wsu_storeutilities>
       <settings>
         <active>0</active>
       </settings>
-
     </wsu_storeutilities>
-	  <storeutilities_conf>
-		  <html>
-		    <minify_admin_html_output>1</minify_admin_html_output>
-		  	<minify_html_output>1</minify_html_output>
-		  </html>
-	  </storeutilities_conf>
+    <storeutilities_conf>
+      <html>
+        <minify_admin_html_output>1</minify_admin_html_output>
+        <minify_html_output>1</minify_html_output>
+      </html>
+      <minify>
+        <js_files>1</js_files>
+        <css_files>1</css_files>
+      </minify>
+      <general_settings>
+        <fejquery>1</fejquery>
+		<fejqueryui>1</fejqueryui>
+		<fejqueryuicss>1</fejqueryuicss>
+		<fejquerymigrate>1</fejquerymigrate>
+        <adminjquery>1</adminjquery>
+		<adminjqueryui>1</adminjqueryui>
+		<adminjqueryuicss>1</adminjqueryuicss>
+		<adminjquerymigrate>1</adminjquerymigrate>
+      </general_settings>
+    </storeutilities_conf>
     <adminhtml>
       <!-- <acl>
         <resources>
@@ -188,14 +229,14 @@
             </children>
           </admin>
         </resources>
-      </acl>-->
+      </acl>
       <layout>
         <updates>
           <storeutilities>
             <file>storeutilities.xml</file>
           </storeutilities>
         </updates>
-      </layout>
+      </layout>-->
     </adminhtml>
   </default>
   

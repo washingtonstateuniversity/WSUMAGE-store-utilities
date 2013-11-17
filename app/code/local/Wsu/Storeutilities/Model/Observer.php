@@ -6,15 +6,12 @@
  * @author      jeremybass <jeremy.bass@wsu.edu>
  */
 class Wsu_Storeutilities_Model_Observer{
-	
-	
-	public function minfyHtml(){
-		//$output = $this->getLayout()->getOutput()."TEST!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
-		//Mage::getSingleton('core/translate_inline')
-		//				->processResponseBody($output);
-		//$this->getResponse()->appendBody($output);
-	}
-	
+
+
+	public function cleanConfigCache(){
+		Mage::helper('storeutilities')->cleanConfigCache();
+	}	
+
 	public function admin_simpleHtmlMinify($observer){
 		if(Mage::getStoreConfig('storeutilities_conf/html/minify_admin_html_output')){
 			$response = $observer->getResponse(); 
@@ -118,4 +115,9 @@ class Wsu_Storeutilities_Model_Observer{
 			)); 			
 		}
 	}
+	
+	
+
+	
+	
 }

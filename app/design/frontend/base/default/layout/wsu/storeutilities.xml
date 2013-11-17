@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <jQuery>
+		<reference name="head">
+			<action method="addItem" ifconfig="storeutilities_conf/general_settings/fejquery">
+				<type>cdn_js</type>
+				<name>//code.jquery.com/jquery-1.10.2.min.js</name>
+				<params/>
+				<if/>
+				<cond/>
+				<window_obj>jQuery</window_obj>
+				<local_path>/js/jquery-1.10.2.min.js</local_path>
+			</action>
+			<action method="addItem" ifconfig="storeutilities_conf/general_settings/fejqueryui">
+				<type>cdn_js</type>
+				<name>//code.jquery.com/ui/1.10.3/jquery-ui.js</name>
+				<params/>
+				<if/>
+				<cond/>
+				<window_obj>jQuery</window_obj>
+				<local_path>/js/jquery-ui.1.10.3.js</local_path>
+			</action>
+			<action method="addItem" ifconfig="storeutilities_conf/general_settings/fejqueryuicss">
+				<type>cdn_css</type>
+				<name>//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css</name>
+				<params/>
+				<if/>
+				<cond/>
+				<window_obj>jQuery</window_obj>
+				<local_path>/js/jquery-ui.smoothness.css</local_path>
+			</action>
+			<action method="addItem" ifconfig="storeutilities_conf/general_settings/fejquerymigrate">
+				<type>cdn_js</type>
+				<name>//code.jquery.com/jquery-migrate-1.2.1.min.js</name>
+				<params/>
+				<if/>
+				<cond/>
+				<window_obj>jQuery</window_obj>
+				<local_path>/js/jquery-migrate-1.2.1.min.js</local_path>
+			</action>
+			<action method="addItem" ifconfig="storeutilities_conf/general_settings/fejquery">
+				<type>cdn_js</type>
+				<name>/js/noconflict.js</name>
+			</action>
+		</reference>
+    </jQuery>
+    <default translate="label" module="page">
+		<update handle="jQuery"/>
+    </default>
+</layout>
