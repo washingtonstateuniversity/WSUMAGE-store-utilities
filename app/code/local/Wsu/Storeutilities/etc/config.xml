@@ -94,14 +94,14 @@
       </wsu_storeutilities>
     </routers>
 	<events>
-	<controller_front_send_response_before>
+	<!--<controller_front_send_response_before>
         <observers>
           <wsu_storeutilities_minfyHtml>
             <class>wsu_storeutilities/observer</class>
             <method>minfyHtml</method>
           </wsu_storeutilities_minfyHtml>
         </observers>
-	</controller_front_send_response_before>
+	</controller_front_send_response_before>-->
 	<controller_action_postdispatch>
 		<observers>
 			<wsu_storeutilities_simpleHtmlMinify>
@@ -132,19 +132,33 @@
 				</wsu_storeutilities_changeattributeset>
 			</observers>
 		</adminhtml_block_html_before>
+		
+		<http_response_send_before>
+			<observers>
+				<wsu_storeutilities_simpleHtmlMinify>
+					<type>singleton</type>
+					<class>wsu_storeutilities/observer</class>
+					<method>admin_simpleHtmlMinify</method>
+				</wsu_storeutilities_simpleHtmlMinify>
+			</observers>
+		</http_response_send_before>
+		
     </events>
   </adminhtml>
+  
   <default>
     <wsu_storeutilities>
       <settings>
         <active>0</active>
       </settings>
+
+    </wsu_storeutilities>
 	  <storeutilities_conf>
 		  <html>
+		    <minify_admin_html_output>1</minify_admin_html_output>
 		  	<minify_html_output>1</minify_html_output>
 		  </html>
 	  </storeutilities_conf>
-    </wsu_storeutilities>
     <adminhtml>
       <!-- <acl>
         <resources>
