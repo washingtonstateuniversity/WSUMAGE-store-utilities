@@ -1,4 +1,6 @@
 <?php
+
+//@todo move to Store Partitions
 //just to change the url when in the view.. blaa.. *this is stupid (*in yelling sparta voice*)*
 class Wsu_Storeutilities_Block_Cart_Item_Renderer extends Mage_Checkout_Block_Cart_Item_Renderer{
 	

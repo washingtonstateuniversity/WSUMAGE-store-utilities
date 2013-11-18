@@ -1,4 +1,6 @@
 <?php
+
+//@todo lets look at this again
 class Wsu_Storeutilities_Helper_Core_Data extends Mage_Core_Helper_Data {
     const XML_PATH_MINIFY_ENABLE_YUICOMPRESSOR 	= 'storeutilities_conf/minify/enable_yuicompressor';
     const XML_PATH_MINIFY_CSS_FILES 			= 'storeutilities_conf/minify/css_files';

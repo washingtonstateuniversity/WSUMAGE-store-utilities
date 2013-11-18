@@ -1,4 +1,6 @@
 <?php
+
+//@todo move to Store Partitions
 /**
  * Catalog product model
  *

@@ -1,4 +1,6 @@
 <?php
+
+//@todo move to Store Partitions and improve this
 require_once 'Mage/Checkout/controllers/CartController.php'; //correct this!!!
 class Wsu_Storeutilities_CartController extends Mage_Checkout_CartController {
     /**

@@ -1,4 +1,5 @@
 <?php
+//@todo move to Store Partitions
 class Wsu_Storeutilities_Helper_Url extends Mage_Checkout_Helper_Url {
     /**
      * Retrieve shopping cart url
