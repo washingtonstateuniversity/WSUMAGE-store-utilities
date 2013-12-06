@@ -178,7 +178,9 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 			'content' => '<p>Welcome to this store\'s page.</p>'
 		);
 		$cmsPageData = $this->extend($data,$params);
-		return Mage::getModel('cms/page')->setData($cmsPageData)->save();
+		var_dump($cmsPageData );
+		Mage::getModel('cms/page')->setData($cmsPageData)->save();
+		return true;
 	}
 	public function createCat($storeCodeId,$rootcatID,$cats=array()){
 		foreach($cats as $url=>$catInfo){
