@@ -34,16 +34,17 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 	public function extend($old,$new){
 		//add error check $old,$new
 		$args = func_get_args();
-		$firstMerge = array($old,$new);
-		foreach($firstMerge as $key => $newValue) {
-			if(isset($new[$key]) != false) {
-				$data[$key] = $newValue;
-			}
+		$data=array();
+		$data = array_merge($data,$old);
+		foreach($new as $key => $newValue) {
+			$data[$key] = $newValue;
 		}
-		if(count($args)>2){
+		if(count($args)>2 && isset($args[2]) && !empty($args[2]) && $args[2]!=null){
 			//keep applying the next array in order
-			$newArg = array_shift($args);
-			$data=call_user_func_array('extend', $newArg);
+			$allArg = array_shift(array_shift($args));//drop old and new
+			$newArg = $allArg[0];
+			$allArg = (count($allArg)>1)?array_shift($allArg):array();
+			$data=call_user_func_array('extend', array_merge(array('old'=>$data,'new'=>$newArg),$allArg));
 		}
 		return $data;
 	}
@@ -159,6 +160,8 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 	<h1>Sites in the center</h1>
 	<p>{{block type="catalog/product" stores_per="5" products_per="2" panles_per="3" template="custom_block/site_list.phtml"}}</p>'
 			);
+			var_dump($cmsPageData);
+			echo "pre";
 			$this->createCmsPage($storeid,$cmsPageData);
 			
 		}
@@ -177,8 +180,7 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 			'stores' => is_array($storeids)?$storeids:array($storeids),//available for all store views
 			'content' => '<p>Welcome to this store\'s page.</p>'
 		);
-		$cmsPageData = $this->extend($data,$params);
-		var_dump($cmsPageData );
+		$cmsPageData = $this->extend($default,$params);
 		Mage::getModel('cms/page')->setData($cmsPageData)->save();
 		return true;
 	}
@@ -214,7 +216,7 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
             ->setAttributeSetFilter($skeletonId)
             ->load();
     
-        $newGroups = filterGroups($set,$groups,$stopGroup,$stopAttr);
+        $newGroups = $this->filterGroups($set,$groups,$stopGroup,$stopAttr);
         //$set->setGroups($newGroups);
         //return $set;   
         return $newGroups;
