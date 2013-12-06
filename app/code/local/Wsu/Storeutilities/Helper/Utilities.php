@@ -29,6 +29,26 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		 }
 		 return $data;
 	}
+	//this will take an array (maybe later an object) a merge grafting the new over the old.  
+	// it will apply in order ie: extend($old,$newer,$newest,$lastApplied) 
+	public function extend($old,$new){
+		//add error check $old,$new
+		$args = func_get_args();
+		$firstMerge = array($old,$new);
+		foreach($firstMerge as $key => $newValue) {
+			if(isset($new[$key]) != false) {
+				$data[$key] = $newValue;
+			}
+		}
+		if(count($args)>2){
+			//keep applying the next array in order
+			$newArg = array_shift($args);
+			$data=call_user_func_array('extend', $newArg);
+		}
+		return $data;
+	}
+	
+	
 	
 	public function moveStoreProducts($website,$store,$rootcat,$children=null){
 		if($children==null)$children = Mage::getModel('catalog/category')->getCategories($rootcat);
@@ -115,6 +135,8 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 			
 			$storeid = $store->getId();
 			$this->moveStoreProducts($webid,$storeid,$rcatId);
+			
+			
 			$cmsPageData = array(
 				'title' => $site['name'],
 				'root_template' => 'one_column',
@@ -137,36 +159,26 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 	<h1>Sites in the center</h1>
 	<p>{{block type="catalog/product" stores_per="5" products_per="2" panles_per="3" template="custom_block/site_list.phtml"}}</p>'
 			);
+			$this->createCmsPage($storeid,$cmsPageData);
 			
-			Mage::getModel('cms/page')->setData($cmsPageData)->save();
 		}
 		return $rcatId;
 	}
-	public function createCmsPage(){
-			$cmsPageData = array(
-				'title' => $site['name'],
-				'root_template' => 'one_column',
-				'meta_keywords' => 'meta,keywords',
-				'meta_description' => 'meta description',
-				'identifier' => 'home',
-				'content_heading' => '',
-				'is_active' => 1,
-				'stores' => array($storeid),//available for all store views
-				
-				//this should be loaded
-				'content' => '<div class="col-left side-col">
-	<p class="home-callout"><a href="{{store direct_url="#"}"> <img src="{{storemedia url="/ph_callout_left_top.jpg"}}" alt="" border="0" /> </a></p>
-	<p class="home-callout"><img src="{{storemedia url="/ph_callout_left_rebel.jpg"}}" alt="" border="0" /></p>
-	{{block type="tag/popular" template="tag/popular.phtml"}}</div>
-	<div class="home-spot">
-	<p class="home-callout"><img src="{{storemedia url="/home_main_callout.jpg"}}" alt="" width="535" border="0" /></p>
-	<p class="home-callout"><img src="{{storemedia url="/free_shipping_callout.jpg"}}" alt="" width="535" border="0" /></p>
-	</div>
-	<h1>Sites in the center</h1>
-	<p>{{block type="catalog/product" stores_per="5" products_per="2" panles_per="3" template="custom_block/site_list.phtml"}}</p>'
-			);
-			
-			return Mage::getModel('cms/page')->setData($cmsPageData)->save();
+	
+	public function createCmsPage($storeids,$params=array()){
+		$default = array(
+			'title' => 'Store title',
+			'root_template' => 'one_column',
+			'meta_keywords' => 'meta,keywords',
+			'meta_description' => 'meta description',
+			'identifier' => 'home',
+			'content_heading' => '',
+			'is_active' => 1,
+			'stores' => is_array($storeids)?$storeids:array($storeids),//available for all store views
+			'content' => '<p>Welcome to this store\'s page.</p>'
+		);
+		$cmsPageData = $this->extend($data,$params);
+		return Mage::getModel('cms/page')->setData($cmsPageData)->save();
 	}
 	public function createCat($storeCodeId,$rootcatID,$cats=array()){
 		foreach($cats as $url=>$catInfo){
@@ -189,7 +201,7 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 			//echo " -> added cat ".$catsId."<br/>";
 			if(isset($catInfo['children'])&& !empty($catInfo['children'])){
 				//echo " MAKING CHILDREN FOR -> added cat ".$catsId."<br/>";
-				createCat($storeCodeId,$rootcatID.'/'.$catsId,$catInfo['children']);
+				$this->createCat($storeCodeId,$rootcatID.'/'.$catsId,$catInfo['children']);
 			}
 		}
 	}	
@@ -284,23 +296,8 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
             }
      		Mage::log("Set ($id) created.", Zend_Log::INFO);
 
-            //<<<<
-     
-            //>>>> Load the new set with groups (mandatory).
-     
-            // Attach the same groups from the given set-ID to the new set.
-            if($copyGroupsFromID === -1) {
-                $this->logInfo("Cloning group configuration from existing set with ID ($copyGroupsFromID).");
-               
-               //$copyGroupsFromID = Mage::getModel(’catalog/product’)->getResource()->getEntityType()->getDefaultAttributeSetId(); 
-                
-                //$attributeSetName = "Default"; // put your own attribute set name
-                //$attribute_set = Mage::getModel("eav/entity_attribute_set")->getCollection();
-                //$attribute_set->addFieldToFilter("attribute_set_name", $attributeSetName)->getFirstItem();
-                //$copyGroupsFromID = $attribute_set->getDefaultAttributeSetId();
-            }
-            $baseGroups = initFromSkeleton($copyGroupsFromID,$model,$stopGroup,$stopAttr);
-            //$baseGroups =  $model->getGroups();
+            $baseGroups = $this->initFromSkeleton($copyGroupsFromID,$model,$stopGroup,$stopAttr);
+
             $modelGroup = Mage::getModel('eav/entity_attribute_group');
             $modelGroup->setAttributeGroupName("Event Details");
             $modelGroup->setAttributeSetId($model->getId());
@@ -406,14 +403,17 @@ die();            */
                         );
      
             // Now, overlay the incoming values on to the defaults.
-            foreach($values as $key => $newValue) {
+            /*foreach($values as $key => $newValue) {
                 if(isset($data[$key]) == false) {
 					Mage::log("Attribute feature [$key] is not valid while creating Attr set.", Zend_Log::ERR);
                     return false;
                 } else {
                     $data[$key] = $newValue;
                 }
-            }
+            }*/
+			
+			$data = $this->extend($data,$values);
+			
             // Valid product types: simple, grouped, configurable, virtual, bundle, downloadable, giftcard
             $data['apply_to']       = $productTypes;
             $data['attribute_code'] = $attributeCode;
