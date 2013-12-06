@@ -79,6 +79,7 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		}
 	}
 	
+	//this needs to be abstracted more
 	public function make_store($categoryName,$site,$store,$view,$url="",$movingcat=-1){
 		//#adding a root cat for the new store we will create
 		// Create category object
@@ -160,8 +161,8 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 	<h1>Sites in the center</h1>
 	<p>{{block type="catalog/product" stores_per="5" products_per="2" panles_per="3" template="custom_block/site_list.phtml"}}</p>'
 			);
-			var_dump($cmsPageData);
-			echo "pre";
+			//var_dump($cmsPageData);
+			///echo "pre";
 			$this->createCmsPage($storeid,$cmsPageData);
 			
 		}
@@ -184,6 +185,7 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		Mage::getModel('cms/page')->setData($cmsPageData)->save();
 		return true;
 	}
+	
 	public function createCat($storeCodeId,$rootcatID,$cats=array()){
 		foreach($cats as $url=>$catInfo){
 			$category = Mage::getModel('catalog/category');
@@ -258,209 +260,204 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
     }
 
 
-        /**
-         * Create an atribute-set.
-         *
-         * For reference, see Mage_Adminhtml_Catalog_Product_SetController::saveAction().
-         * @
-		 * 
-		 * 
-		 * 
-         * @return array|false
-         */
-        public function createAttributeSet($setName, $copyGroupsFromID = -1,$stopGroup=null,$stopAttr=null) {
-     
-            $setName = trim($setName);
-     
-            //$this->logInfo("Creating attribute-set with name [$setName].");
-     
-            if($setName == '') {
-               // $this->$this->logInfo("Could not create attribute set with an empty name.");
-			   	Mage::log("Tried to create attribute set with an empty name.", Zend_Log::ERR);
-                return false;
-            }
+	/**
+	 * Create an atribute-set.
+	 *
+	 * For reference, see Mage_Adminhtml_Catalog_Product_SetController::saveAction().
+	 * @
+	 * 
+	 * 
+	 * 
+	 * @return array|false
+	 */
+	public function createAttributeSet($setName, $copyGroupsFromID = -1,$stopGroup=null,$stopAttr=null) {
+ 
+		$setName = trim($setName);
+ 
+		//$this->logInfo("Creating attribute-set with name [$setName].");
+ 
+		if($setName == '') {
+		   // $this->$this->logInfo("Could not create attribute set with an empty name.");
+			Mage::log("Tried to create attribute set with an empty name.", Zend_Log::ERR);
+			return false;
+		}
 
-            $model = Mage::getModel('eav/entity_attribute_set');
-            $entityTypeID = Mage::getModel('catalog/product')->getResource()->getTypeId();
+		$model = Mage::getModel('eav/entity_attribute_set');
+		$entityTypeID = Mage::getModel('catalog/product')->getResource()->getTypeId();
 
-            $model->setEntityTypeId($entityTypeID);
-            $model->setAttributeSetName($setName);
-			//just in case, may not be needed
-            $model->validate();
-            try {
-                $model->save();
-            } catch(Exception $ex) {
-				Mage::log("Initial attribute-set with name [$setName] could not be saved: " . $ex->getMessage(), Zend_Log::ERR);
-                return false;
-            }
-     
-            if(($id = $model->getId()) == false) {
-				Mage::log("Could not get ID from new vanilla attribute-set with name [$setName].", Zend_Log::ERR);
-                return false;
-            }
-     		Mage::log("Set ($id) created.", Zend_Log::INFO);
+		$model->setEntityTypeId($entityTypeID);
+		$model->setAttributeSetName($setName);
+		//just in case, may not be needed
+		$model->validate();
+		try {
+			$model->save();
+		} catch(Exception $ex) {
+			Mage::log("Initial attribute-set with name [$setName] could not be saved: " . $ex->getMessage(), Zend_Log::ERR);
+			return false;
+		}
+ 
+		if(($id = $model->getId()) == false) {
+			Mage::log("Could not get ID from new vanilla attribute-set with name [$setName].", Zend_Log::ERR);
+			return false;
+		}
+		Mage::log("Set ($id) created.", Zend_Log::INFO);
 
-            $baseGroups = $this->initFromSkeleton($copyGroupsFromID,$model,$stopGroup,$stopAttr);
+		$baseGroups = $this->initFromSkeleton($copyGroupsFromID,$model,$stopGroup,$stopAttr);
 
-            $modelGroup = Mage::getModel('eav/entity_attribute_group');
-            $modelGroup->setAttributeGroupName("Event Details");
-            $modelGroup->setAttributeSetId($model->getId());
-            $modelGroup->setSortOrder(1);
+		$modelGroup = Mage::getModel('eav/entity_attribute_group');
+		$modelGroup->setAttributeGroupName("Event Details");
+		$modelGroup->setAttributeSetId($model->getId());
+		$modelGroup->setSortOrder(1);
+	
+		$modelGroup->setId(null)
+			->setAttributeSetId($model->getId())
+			->setDefaultId($modelGroup->getDefaultId())
+			->setSortOrder(1)
+			->setAttributes(array());
+		$newGroups[] = $modelGroup;
 		
-			$modelGroup->setId(null)
-				->setAttributeSetId($model->getId())
-				->setDefaultId($modelGroup->getDefaultId())
-				->setSortOrder(1)
-				->setAttributes(array());
-			$newGroups[] = $modelGroup;
-			
-			
-            $model->setGroups( array_merge($baseGroups,$newGroups) );
-            //$model->initFromSkeleton($copyGroupsFromID);
+		
+		$model->setGroups( array_merge($baseGroups,$newGroups) );
+		//$model->initFromSkeleton($copyGroupsFromID);
 /*            var_dump($model);
 die();  
 $baseGroups =  $model->getGroups();
 
 var_dump($baseGroups);
 die();            */
-            //<<<<
-     
-            // Save the final version of our set.
-            try {
-                $model->save();
-            } catch(Exception $ex) {
-				Mage::log("Final attribute-set with name [$setName] could not be saved: " . $ex->getMessage(), Zend_Log::ERR);
-                return false;
-            }
-            if(($groupID = $modelGroup->getId()) == false) {
-				Mage::log("Could not get ID from new group [$groupName].", Zend_Log::ERR);
-                return false;
-            }
-     		Mage::log("Created attribute-set with ID ($id) and default-group with ID ($groupID).", Zend_Log::INFO);
-            return array(
-                            'SetID'     => $id,
-                            'GroupID'   => $groupID,
-                        );
-        }
-     
-        /**
-         * Create an attribute.
-         *
-         * For reference, see Mage_Adminhtml_Catalog_Product_AttributeController::saveAction().
-         * @lableText : string -
-		 * @attributeCode : string -
-		 * @values : string|-1 -
-		 * @productTypes : string|-1 - A CSV like "simple, grouped, configurable, virtual, bundle, downloadable, giftcard"
-		 * @setInfo : array|-1 -
-		 * 
-         * @return int|false
-         */
-        public function createAttribute($labelText, $attributeCode, $values = -1, $productTypes = -1, $setInfo = -1) {
-     
-            $labelText = trim($labelText);
-            $attributeCode = trim($attributeCode);
-     
-            if($labelText == '' || $attributeCode == '') {
-				Mage::log("Can't import the attribute with an empty label or code.  LABEL= [$labelText]  CODE= [$attributeCode]", Zend_Log::ERR);
-                return false;
-            }
-     
-            if($values === -1) {
-                $values = array();
-            }
-     
-            if($productTypes === -1) {
-                $productTypes = array();
-            }
-     
-            if($setInfo !== -1 && (isset($setInfo['SetID']) == false || isset($setInfo['GroupID']) == false)) {
-				Mage::log("Failed provide both the set-ID and the group-ID of the attribute-set", Zend_Log::ERR);
-                return false;
-            }
+		//<<<<
+ 
+		// Save the final version of our set.
+		try {
+			$model->save();
+		} catch(Exception $ex) {
+			Mage::log("Final attribute-set with name [$setName] could not be saved: " . $ex->getMessage(), Zend_Log::ERR);
+			return false;
+		}
+		if(($groupID = $modelGroup->getId()) == false) {
+			Mage::log("Could not get ID from new group [$groupName].", Zend_Log::ERR);
+			return false;
+		}
+		Mage::log("Created attribute-set with ID ($id) and default-group with ID ($groupID).", Zend_Log::INFO);
+		return array(
+						'SetID'     => $id,
+						'GroupID'   => $groupID,
+					);
+	}
+ 
+	/**
+	 * Create an attribute.
+	 *
+	 * For reference, see Mage_Adminhtml_Catalog_Product_AttributeController::saveAction().
+	 * @lableText : string -
+	 * @attributeCode : string -
+	 * @values : string|-1 -
+	 * @productTypes : string|-1 - A CSV like "simple, grouped, configurable, virtual, bundle, downloadable, giftcard"
+	 * @setInfo : array|-1 -
+	 * 
+	 * @return int|false
+	 */
+	public function createAttribute($labelText, $attributeCode, $values = -1, $productTypes = -1, $setInfo = -1) {
+ 
+		$labelText = trim($labelText);
+		$attributeCode = trim($attributeCode);
+ 
+		if($labelText == '' || $attributeCode == '') {
+			Mage::log("Can't import the attribute with an empty label or code.  LABEL= [$labelText]  CODE= [$attributeCode]", Zend_Log::ERR);
+			return false;
+		}
+ 
+		if($values === -1) {
+			$values = array();
+		}
+ 
+		if($productTypes === -1) {
+			$productTypes = array();
+		}
+ 
+		if($setInfo !== -1 && (isset($setInfo['SetID']) == false || isset($setInfo['GroupID']) == false)) {
+			Mage::log("Failed provide both the set-ID and the group-ID of the attribute-set", Zend_Log::ERR);
+			return false;
+		}
 
-            //>>>> Build the data structure that will define the attribute. See
-            //     Mage_Adminhtml_Catalog_Product_AttributeController::saveAction().
-     
-            $data = array(
-                            'is_global'                     => '0',
-                            'frontend_input'                => 'text',
-                            'default_value_text'            => '',
-                            'default_value_yesno'           => '0',
-                            'default_value_date'            => '',
-                            'default_value_textarea'        => '',
-                            'is_unique'                     => '0',
-                            'is_required'                   => '0',
-                            'frontend_class'                => '',
-                            'is_searchable'                 => '1',
-                            'is_visible_in_advanced_search' => '1',
-                            'is_comparable'                 => '1',
-                            'is_used_for_promo_rules'       => '0',
-                            'is_html_allowed_on_front'      => '1',
-                            'is_visible_on_front'           => '0',
-                            'used_in_product_listing'       => '0',
-                            'used_for_sort_by'              => '0',
-                            'is_configurable'               => '0',
-                            'is_filterable'                 => '0',
-                            'is_filterable_in_search'       => '0',
-                            'backend_type'                  => 'varchar',
-                            'default_value'                 => '',
-                        );
-     
-            // Now, overlay the incoming values on to the defaults.
-            /*foreach($values as $key => $newValue) {
-                if(isset($data[$key]) == false) {
-					Mage::log("Attribute feature [$key] is not valid while creating Attr set.", Zend_Log::ERR);
-                    return false;
-                } else {
-                    $data[$key] = $newValue;
-                }
-            }*/
-			
-			$data = $this->extend($data,$values);
-			
-            // Valid product types: simple, grouped, configurable, virtual, bundle, downloadable, giftcard
-            $data['apply_to']       = $productTypes;
-            $data['attribute_code'] = $attributeCode;
-            $data['frontend_label'] = array(
-                                                0 => $labelText,
-                                                1 => '',
-                                                3 => '',
-                                                2 => '',
-                                                4 => '',
-                                            );
+		//>>>> Build the data structure that will define the attribute. See
+		//     Mage_Adminhtml_Catalog_Product_AttributeController::saveAction().
+ 
+		$data = array(
+						'is_global'                     => '0',
+						'frontend_input'                => 'text',
+						'default_value_text'            => '',
+						'default_value_yesno'           => '0',
+						'default_value_date'            => '',
+						'default_value_textarea'        => '',
+						'is_unique'                     => '0',
+						'is_required'                   => '0',
+						'frontend_class'                => '',
+						'is_searchable'                 => '1',
+						'is_visible_in_advanced_search' => '1',
+						'is_comparable'                 => '1',
+						'is_used_for_promo_rules'       => '0',
+						'is_html_allowed_on_front'      => '1',
+						'is_visible_on_front'           => '0',
+						'used_in_product_listing'       => '0',
+						'used_for_sort_by'              => '0',
+						'is_configurable'               => '0',
+						'is_filterable'                 => '0',
+						'is_filterable_in_search'       => '0',
+						'backend_type'                  => 'varchar',
+						'default_value'                 => '',
+					);
+ 
+		// Now, overlay the incoming values on to the defaults.
+		/*foreach($values as $key => $newValue) {
+			if(isset($data[$key]) == false) {
+				Mage::log("Attribute feature [$key] is not valid while creating Attr set.", Zend_Log::ERR);
+				return false;
+			} else {
+				$data[$key] = $newValue;
+			}
+		}*/
+		
+		$data = $this->extend($data,$values);
+		
+		// Valid product types: simple, grouped, configurable, virtual, bundle, downloadable, giftcard
+		$data['apply_to']       = $productTypes;
+		$data['attribute_code'] = $attributeCode;
+		$data['frontend_label'] = array(
+											0 => $labelText,
+											1 => '',
+											3 => '',
+											2 => '',
+											4 => '',
+										);
 
-            $model = Mage::getModel('catalog/resource_eav_attribute');
-     
-            $model->addData($data);
-     
-            if($setInfo !== -1) {
-                $model->setAttributeSetId($setInfo['SetID']);
-                $model->setAttributeGroupId($setInfo['GroupID']);
-            }
-     
-            $entityTypeID = Mage::getModel('eav/entity')->setType('catalog_product')->getTypeId();
-            $model->setEntityTypeId($entityTypeID);
-     
-            $model->setIsUserDefined(1);
+		$model = Mage::getModel('catalog/resource_eav_attribute');
+ 
+		$model->addData($data);
+ 
+		if($setInfo !== -1) {
+			$model->setAttributeSetId($setInfo['SetID']);
+			$model->setAttributeGroupId($setInfo['GroupID']);
+		}
+ 
+		$entityTypeID = Mage::getModel('eav/entity')->setType('catalog_product')->getTypeId();
+		$model->setEntityTypeId($entityTypeID);
+ 
+		$model->setIsUserDefined(1);
 
-            try {
-                $model->save();
-            }
-            catch(Exception $ex) {
-				Mage::log("Attribute [$labelText] could not be saved: " . $ex->getMessage(), Zend_Log::ERR);
-                return false;
-            }
-     
-            $id = $model->getId();
+		try {
+			$model->save();
+		}
+		catch(Exception $ex) {
+			Mage::log("Attribute [$labelText] could not be saved: " . $ex->getMessage(), Zend_Log::ERR);
+			return false;
+		}
+ 
+		$id = $model->getId();
 
-     		Mage::log("Attribute [$labelText] has been saved as ID ($id).", Zend_Log::INFO);
-            return $id;
-        }
-
-
-
-
-	
+		Mage::log("Attribute [$labelText] has been saved as ID ($id).", Zend_Log::INFO);
+		return $id;
+	}
 }
 
 
