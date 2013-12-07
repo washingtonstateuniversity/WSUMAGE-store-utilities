@@ -6,6 +6,7 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 			echo $String."<br/>";
 	}
 	
+	
 	public function getUniqueCode($length = ""){
 		$code = md5(uniqid(rand(), true));
 		if ($length != "") return substr($code, 0, $length);
@@ -29,6 +30,7 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		 }
 		 return $data;
 	}
+	
 	//this will take an array (maybe later an object) a merge grafting the new over the old.  
 	// it will apply in order ie: extend($old,$newer,$newest,$lastApplied) 
 	public function extend($old,$new){
@@ -190,7 +192,6 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		foreach($cats as $url=>$catInfo){
 			$category = Mage::getModel('catalog/category');
 			$category->setStoreId($storeCodeId);
-			
 				//this should be more pliable
 				$cat['name'] =$catInfo['name'];
 				$cat['path'] = "1/".$rootcatID;
@@ -200,13 +201,10 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 				$cat['page_layout'] = $catInfo['is_anchor'];
 				$cat['url_key'] = $url;
 				$cat['image'] = $catInfo['image'];
-			
 			$category->addData($cat);
 			$category->save();
 			$catsId=$category->getId();
-			//echo " -> added cat ".$catsId."<br/>";
 			if(isset($catInfo['children'])&& !empty($catInfo['children'])){
-				//echo " MAKING CHILDREN FOR -> added cat ".$catsId."<br/>";
 				$this->createCat($storeCodeId,$rootcatID.'/'.$catsId,$catInfo['children']);
 			}
 		}
@@ -219,8 +217,6 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
             ->load();
     
         $newGroups = $this->filterGroups($set,$groups,$stopGroup,$stopAttr);
-        //$set->setGroups($newGroups);
-        //return $set;   
         return $newGroups;
     }
 
@@ -228,6 +224,7 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
         $newGroups = array();
         foreach ($groups as $group) {
             if(!in_array($group->getAttributeGroupName(),$stopGroup)){
+				
                 $newGroup = clone $group;
                 $newGroup->setId(null)
                     ->setAttributeSetId($set->getId())
@@ -243,7 +240,6 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
                     if(!in_array($attribute->getName(),$stopAttr)){
                         $newAttribute = Mage::getModel('eav/entity_attribute')
                             ->setId($attribute->getId())
-                            //->setAttributeGroupId($newGroup->getId())
                             ->setAttributeSetId($set->getId())
                             ->setEntityTypeId($set->getEntityTypeId())
                             ->setSortOrder($attribute->getSortOrder());
@@ -254,9 +250,8 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
                 $newGroups[] = $newGroup;
             }
         }
-        return $newGroups;
-        //$set->setGroups($newGroups);
-        //return $set;       
+		//var_dump($newGroups);
+        return $newGroups; 
     }
 
 

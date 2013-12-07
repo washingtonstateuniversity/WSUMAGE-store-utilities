@@ -1,16 +1,8 @@
 <?php
 
 //@todo move to Store Partitions
-/**
- * Catalog product model
- *
- * @method Mage_Catalog_Model_Resource_Product getResource()
- * @method Mage_Catalog_Model_Resource_Product _getResource()
- *
- * @category   Mage
- * @package    Mage_Catalog
- * @author      Magento Core Team <core@magentocommerce.com>
- */
+//this is used for the to applie the right url
+//to the product from the store it belones to 
 class Wsu_Storeutilities_Model_Product extends Mage_Catalog_Model_Product {
     public function getProductUrl($useSid = NULL){
 		$_proId =  $this->getId();

@@ -1,0 +1,42 @@
+<?php
+/**
+ * @var $this Wsu_AdminTheme_Block_Adminhtml_System_Config_Fieldset_Hint
+ */
+?>
+<div class="box">
+    <form action="<?=Mage::helper('adminhtml')->getUrl('*/*/changeCategories', array('_current'=>true))?>" >
+            <h4><?=$this->helper('storeutilities')->__('Store Utilities is the general utility module that other modules can be grafted of.'); ?></h4>
+            
+            <div style="width:150px; display:inline-block;">
+            	<h4><?=$this->helper('storeutilities')->__('Products to change'); ?>:</h4>
+                <?php
+                    if(!empty($_productIds)){
+                        foreach ($_productIds as $_productId){ 
+                            $product   = Mage::getSingleton('catalog/product')->load($_productId);
+                            echo '<input type="hidden" name="product[]" value="'.$_productId.'" /> ';
+                            echo $product->getName().'<br/>';
+                        }
+                    }
+                ?>
+            </div>
+            <div style="width:150px; display:inline-block;">
+			   <h4><?=$this->helper('storeutilities')->__('Method'); ?>: <select name="method" required /></h4>
+               <option value=""><?=$this->helper('storeutilities')->__('Select'); ?></option>
+               <option value="add"><?=$this->helper('storeutilities')->__('Extend'); ?></option>
+               <option value="match"><?=$this->helper('storeutilities')->__('Match'); ?></option>
+               <option value="remove"><?=$this->helper('storeutilities')->__('Remove'); ?></option>
+               </select>
+               <h4><?=$this->helper('storeutilities')->__('Categories'); ?></h4>
+               <select name="categories[]" multiple="multiple" size="15" required>
+                <?php
+                    foreach ($this->helper('storeutilities')->get_mage_categories() as $_category){ 
+                        echo '<option class="level'.str_repeat("_",$_category['level']).'" value="'.$_category['entity_id'].'">'.
+                                str_repeat("-",$_category['level']).$_category['name'].
+                             '</option>';
+                    }
+                ?>
+              </select>
+          </div>
+          <input type="submit" value="Submit" />
+      </form>
+</div>

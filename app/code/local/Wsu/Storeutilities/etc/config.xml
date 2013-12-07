@@ -79,7 +79,6 @@
 			</observers>
 		</admin_system_config_changed_section_wsu_storeutilities_conf>
 	</events>
-	
   </global>
   <admin>
     <layout>

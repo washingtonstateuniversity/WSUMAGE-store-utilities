@@ -28,6 +28,78 @@ class Wsu_Storeutilities_Helper_Data extends Mage_Core_Helper_Abstract {
             return $value;
         }
     }
+	/* get Cats that are from your store scope
+		@todo redo this //maybe it should let you pick the thing to get? ie: array('name','level')
+	*/
+	public function get_mage_categories() {
+		$category = Mage::getModel('catalog/category'); 
+		$tree = $category->getTreeModel(); 
+		$tree->load(); 
+		$ids = $tree->getCollection()->getAllIds(); 
+		$categories = array();
+		//$storeId = //get by user
+		if ($ids){ 
+			foreach ($ids as $id){ 
+				$cat = Mage::getModel('catalog/category'); 
+				//$cat->setStoreId($storeId);
+				$cat->load($id);
+				$entity_id = $cat->getId(); 
+				$name = $cat->getName(); 
+				$level = $cat->getLevel();
+				$categories[]=array("entity_id"=>$entity_id, 
+							  "name"=>$name, 
+							  "level"=>$level); 
+			} 
+		}
+		return $categories;
+	}
+	
+	
+	
+	public function hasExt($extname){
+		return Mage::helper('core')->isModuleEnabled($extname)&&Mage::helper('core')->isModuleOutputEnabled($extname);
+	}
+	
+	
+	
+	
+	
+    /**
+     * Get or initialize an array of the default attributes for every product.
+     * 
+     * @return array The Require attribute codes for the produt's new attribute set.
+     */
+    public function _getRequiredAttributes($attrSetId) {
+        $_requiredAttributes = array();
+        $attributes          = Mage::getModel('catalog/product_attribute_api')->items($attrSetId);
+        foreach ($attributes as $_attribute) {
+            $_requiredAttributes[] = $_attribute['code'];
+        }
+		//these must be there so lets just make sure
+		$_requiredAttributes[] = 'has_options';
+		$_requiredAttributes[] = 'required_options';
+		$_requiredAttributes[] = 'sku';
+        return $_requiredAttributes;
+    }
+	protected $_allAttributes = array();
+    public function _getAllAttributes() {
+        if (empty($this->_allAttributes)) {
+            $attributes = Mage::getResourceModel('catalog/product_attribute_collection')->getItems();
+            foreach ($attributes as $_attribute) {
+                $attr['code']           = $_attribute['attribute_code'];
+                $attribute              = Mage::getModel('eav/entity_attribute')->load($_attribute['attribute_id']);
+                $attr['table']          = $attribute->getBackendTable();
+                $attr['id']             = $_attribute['attribute_id'];
+                $this->_allAttributes[] = $attr;
+            }
+        }
+        return $this->_allAttributes;
+    }
+	
+	
+	
+	
+	
     /**
      * Get file extension in lower case
      *
