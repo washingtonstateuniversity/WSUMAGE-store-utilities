@@ -50,11 +50,11 @@
       <wsu_storeutilities>
         <class>Wsu_Storeutilities_Model</class>
       </wsu_storeutilities>
-      <catalog>
+      <!--<catalog>
         <rewrite>
           <product>Wsu_Storeutilities_Model_Product</product>
         </rewrite>
-      </catalog>
+      </catalog>-->
       <core>
         <rewrite>
           <design_package>Wsu_Storeutilities_Model_Design_Package</design_package>
@@ -109,14 +109,6 @@
       </wsu_storeutilities>
     </routers>
     <events>
-      <!--<controller_front_send_response_before>
-        <observers>
-          <wsu_storeutilities_minfyHtml>
-            <class>wsu_storeutilities/observer</class>
-            <method>minfyHtml</method>
-          </wsu_storeutilities_minfyHtml>
-        </observers>
-	</controller_front_send_response_before>-->
       <controller_action_postdispatch>
         <observers>
           <wsu_storeutilities_simpleHtmlMinify>

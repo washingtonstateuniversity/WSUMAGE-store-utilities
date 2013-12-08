@@ -51,8 +51,8 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		return $data;
 	}
 	
-	
-	
+	//this should maybe be not based on the cats but the
+	//store it's on, ie pull from Mage::getModel('catalog/product')?
 	public function moveStoreProducts($website,$store,$rootcat,$children=null){
 		if($children==null)$children = Mage::getModel('catalog/category')->getCategories($rootcat);
 		foreach ($children as $category) {
@@ -64,17 +64,13 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 				$oldproductId = $product->getId();
 				$_product=$product->load($productId);
 				$sku = $_product->getSku();
-				//echo "--------------------------------\n for ".$sku.' old webids:'.implode(',',$_product->getWebsiteIds()).' && storeid:'.$oldproductId." \n";
 				try{
 					$_product->setWebsiteIds(array($website)); //assigning website ID
 					$_product->setStoreId($store);
 					$_product->save();
 				}catch (Exception $e) {
-				   //echo  'failed on sku:: ',$sku,"\n",$e->getMessage(),"\n";
 				   Mage::log('failed on sku:: ',$sku,"\n",$e->getMessage(),"\n", Zend_Log::ERR);
 				}
-				//$newproductId = $_product->getId();
-				//echo 'new webids:'.implode(',',$_product->getWebsiteIds()).' && storeid:'.$newproductId."\n";
 			}
 			$childrenCats = Mage::getModel('catalog/category')->getCategories($cat_id);
 			if( count($childrenCats)>0){ $this->moveStoreProducts($website,$site,$cat_id,$childrenCats); }
