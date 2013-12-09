@@ -149,7 +149,7 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 				
 				//this should be loaded
 				'content' => '<div class="col-left side-col">
-	<p class="home-callout"><a href="{{store direct_url="#"}"> <img src="{{storemedia url="/ph_callout_left_top.jpg"}}" alt="" border="0" /> </a></p>
+	<p class="home-callout"><a href="{{store direct_url="#"}}"> <img src="{{storemedia url="/ph_callout_left_top.jpg"}}" alt="" border="0" /> </a></p>
 	<p class="home-callout"><img src="{{storemedia url="/ph_callout_left_rebel.jpg"}}" alt="" border="0" /></p>
 	{{block type="tag/popular" template="tag/popular.phtml"}}</div>
 	<div class="home-spot">
