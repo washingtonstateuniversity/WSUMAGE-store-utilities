@@ -6,7 +6,7 @@ This module is the base module that is used for other modules or themes.  This e
 
 Changes this module will make are as listed.
 ------------------------
-1. Provides methods to fully clear the configuration caches `cleanConfigCache()`
+1. Provides methods to fully clear the configuration caches `cleanConfigCache()` .  This is to be used with module where the config that is set from the admin would not reflect till the cache folder is emptied.
 1. Adds new JS/CSS inclusion types for layout XMLs, notablly the cdn_js which appends to the start of the js block
    
      1. cdn_js - Output a cdn js script tag above everything else
