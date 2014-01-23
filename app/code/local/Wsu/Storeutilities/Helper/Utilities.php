@@ -101,22 +101,33 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		if($rcatId>0){
 			if($movingcat>0){
 				$category = Mage::getModel( 'catalog/category' )->load($movingcat);
-				Mage::unregister('category');
-				Mage::unregister('current_category');
-				Mage::register('category', $category);
-				Mage::register('current_category', $category);
-				$category->move($rcatId);
+				$targetcategory = Mage::getModel( 'catalog/category' )->load($rcatId);
+				if(!empty($category) && !empty($targetcategory)){
+					Mage::unregister('category');
+					Mage::unregister('current_category');
+					Mage::register('category', $category);
+					Mage::register('current_category', $category);
+					$category->move($rcatId);
+				}
 			}
 	
 		//#addWebsite
 			$website = Mage::getModel('core/website');
-			$website->setCode($site['code'])
-				->setName($site['name'])
-				->save();
+			if(!$this->checkForWebsite($site['code'])){
+				$website->setCode($site['code'])
+					->setName($site['name'])
+					->save();
+			}else{
+				$website->load($site['code']);
+				if (empty($website)) {
+					return false;
+				}
+			}
 			$webid = $website->getId();
+			if(!($webid>0)) return false;
 		//#addStoreGroup
 			$storeGroup = Mage::getModel('core/store_group');
-			$storeGroup->setWebsiteId($website->getId())
+			$storeGroup->setWebsiteId($webid)
 				->setName($store['name'])
 				->setRootCategoryId($rcatId)
 				->save();
@@ -126,6 +137,8 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		//#addStore
 			$sotercode=$view['code'];
 			$store = Mage::getModel('core/store');
+			$store->load($sotercode);
+			if (!empty($store))  return false;
 			$store->setCode($sotercode)
 				->setWebsiteId($storeGroup->getWebsiteId())
 				->setGroupId($storeGroup->getId())
@@ -249,7 +262,15 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		//var_dump($newGroups);
         return $newGroups; 
     }
-
+	public function checkForWebsite($code=NULL){
+		if($code!=NULL){
+			$website = Mage::getConfig()->getNode('websites/'.$code);
+			if (!empty($website)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * Create an atribute-set.
