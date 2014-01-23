@@ -230,6 +230,15 @@
 					<show_in_website>1</show_in_website>
 					<show_in_store>1</show_in_store>
 				</css_files>
+				<minify_timeout translate="label">
+					<label>Minify Set a custom php timeout</label>
+					<comment>Minification and merged files can take a bit the first time, so if you are running into issues then you can increase this to advoid the issue</comment>
+					<frontend_type>text</frontend_type>
+					<sort_order>30</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+				</minify_timeout>
 			</fields>
 		</minify>
 
