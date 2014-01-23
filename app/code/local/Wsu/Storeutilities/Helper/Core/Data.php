@@ -16,7 +16,7 @@ class Wsu_Storeutilities_Helper_Core_Data extends Mage_Core_Helper_Data {
         return Mage::getStoreConfigFlag(self::XML_PATH_MINIFY_CSS_FILES);
     }
     public function getMinifyTimeout() {
-        return Mage::getStoreConfigFlag(self::XML_PATH_MINIFY_TIMEOUT);
+        return Mage::getStoreConfig(self::XML_PATH_MINIFY_TIMEOUT);
     }
     public function minifyJsCss($data, $target) {
 		$current_max_execution_time = ini_get('max_execution_time');
