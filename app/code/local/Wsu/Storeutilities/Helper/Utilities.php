@@ -77,17 +77,23 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		}
 	}
 	
-	//this needs to be abstracted more
-	public function make_store($categoryName,$site,$store,$view,$url="",$movingcat=-1){
-		//#adding a root cat for the new store we will create
-		// Create category object
+	public function make_category($categoryName,$attr=array()){
 		$category = Mage::getModel('catalog/category');
 		$category->setStoreId(0); // No store is assigned to this category
 		
-		$rcat['name'] = $categoryName;
-		$rcat['path'] = "1"; // this is the catgeory path - 1 for root category
-		$rcat['display_mode'] = "PRODUCTS";
-		$rcat['is_active'] = 1;
+		//set up so defaults
+		$defaults = array(
+			'name'=>$categoryName,
+			'path'=>"1", // this is the catgeory path - 1 for root category. 
+			'description'=>"Category Description",
+			'meta_title'=>"",
+			'meta_keywords'=>"",
+			'meta_description'=>"",
+			'display_mode'=>"PRODUCTS",
+			'is_active'=>1,
+			'is_anchor'=>1
+		);
+		$rcat = array_merge($defaults,$attr);
 		
 		$category->addData($rcat);
 		$rcatId=0;
@@ -98,6 +104,14 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 			catch (Exception $e){
 			echo $e->getMessage();
 		}
+		return $rcatId;
+	}
+	
+	
+	//this needs to be abstracted more
+	public function make_store($rootCategory,$site,$store,$view,$url="",$movingcat=-1){
+		//#adding a root cat for the new store we will create
+		$rcatId=$rootCategory;
 		if($rcatId>0){
 			if($movingcat>0){
 				$category = Mage::getModel( 'catalog/category' )->load($movingcat);
