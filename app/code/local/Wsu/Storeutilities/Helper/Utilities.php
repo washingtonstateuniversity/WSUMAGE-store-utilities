@@ -77,17 +77,23 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		}
 	}
 	
-	//this needs to be abstracted more
-	public function make_store($categoryName,$site,$store,$view,$url="",$movingcat=-1){
-		//#adding a root cat for the new store we will create
-		// Create category object
+	public function make_category($categoryName,$attr=array()){
 		$category = Mage::getModel('catalog/category');
 		$category->setStoreId(0); // No store is assigned to this category
 		
-		$rcat['name'] = $categoryName;
-		$rcat['path'] = "1"; // this is the catgeory path - 1 for root category
-		$rcat['display_mode'] = "PRODUCTS";
-		$rcat['is_active'] = 1;
+		//set up so defaults
+		$defaults = array(
+			'name'=>$categoryName,
+			'path'=>"1", // this is the catgeory path - 1 for root category. 
+			'description'=>"Category Description",
+			'meta_title'=>"",
+			'meta_keywords'=>"",
+			'meta_description'=>"",
+			'display_mode'=>"PRODUCTS",
+			'is_active'=>1,
+			'is_anchor'=>1
+		);
+		$rcat = array_merge($defaults,$attr);
 		
 		$category->addData($rcat);
 		$rcatId=0;
@@ -98,6 +104,38 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 			catch (Exception $e){
 			echo $e->getMessage();
 		}
+		return $rcatId;
+	}
+	public function make_website($site){
+		$website = Mage::getModel('core/website');
+		if(!$this->checkForWebsite($site['code'])){
+			$website->setCode($site['code'])
+				->setName($site['name'])
+				->save();
+		}else{
+			$website->load($site['code']);
+			if (empty($website)) {
+				return false;
+			}
+		}
+		$webid = $website->getId();
+		return $webid;
+	}
+	public function make_storeGroup($store,$url,$website,$rootCategory){
+		$storeGroup = Mage::getModel('core/store_group');
+		$storeGroup->setWebsiteId($website)
+			->setName($store['name'])
+			->setRootCategoryId($rootCategory)
+			->save();
+		$cDat = new Mage_Core_Model_Config();
+		$cDat->saveConfig('web/unsecure/base_url', "http://".$url.'/', 'websites', $website);
+		$cDat->saveConfig('web/secure/base_url', "https://".$url.'/', 'websites', $website);
+		
+		$storeGroupId=$storeGroup->getId();
+		return $storeGroupId;
+	}
+	public function reparentCategory($rootCategory,$movingcat){
+		$rcatId=$rootCategory;
 		if($rcatId>0){
 			if($movingcat>0){
 				$category = Mage::getModel( 'catalog/category' )->load($movingcat);
@@ -114,74 +152,29 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 					}
 				}
 			}
-	
-		//#addWebsite
-			$website = Mage::getModel('core/website');
-			if(!$this->checkForWebsite($site['code'])){
-				$website->setCode($site['code'])
-					->setName($site['name'])
-					->save();
-			}else{
-				$website->load($site['code']);
-				if (empty($website)) {
-					return false;
-				}
-			}
-			$webid = $website->getId();
-			if(!($webid>0)) return false;
-		//#addStoreGroup
-			$storeGroup = Mage::getModel('core/store_group');
-			$storeGroup->setWebsiteId($webid)
-				->setName($store['name'])
-				->setRootCategoryId($rcatId)
-				->save();
-			$cDat = new Mage_Core_Model_Config();
-			$cDat->saveConfig('web/unsecure/base_url', "http://".$url.'/', 'websites', $webid);
-			$cDat->saveConfig('web/secure/base_url', "https://".$url.'/', 'websites', $webid);
-		//#addStore
-			$sotercode=$view['code'];
-			$store = Mage::getModel('core/store');
-			$store->load($sotercode);
-			if (!empty($store))  return false;
-			$store->setCode($sotercode)
-				->setWebsiteId($storeGroup->getWebsiteId())
-				->setGroupId($storeGroup->getId())
-				->setName($view['name'])
-				->setIsActive(1)
-				->save();
-			
-			$storeid = $store->getId();
-			$this->moveStoreProducts($webid,$storeid,$rcatId);
-			
-			
-			$cmsPageData = array(
-				'title' => $site['name'],
-				'root_template' => 'one_column',
-				'meta_keywords' => 'meta,keywords',
-				'meta_description' => 'meta description',
-				'identifier' => 'home',
-				'content_heading' => '',
-				'is_active' => 1,
-				'stores' => array($storeid),//available for all store views
-				
-				//this should be loaded
-				'content' => '<div class="col-left side-col">
-	<p class="home-callout"><a href="{{store direct_url="#"}}"> <img src="{{storemedia url="/ph_callout_left_top.jpg"}}" alt="" border="0" /> </a></p>
-	<p class="home-callout"><img src="{{storemedia url="/ph_callout_left_rebel.jpg"}}" alt="" border="0" /></p>
-	{{block type="tag/popular" template="tag/popular.phtml"}}</div>
-	<div class="home-spot">
-	<p class="home-callout"><img src="{{storemedia url="/home_main_callout.jpg"}}" alt="" width="535" border="0" /></p>
-	<p class="home-callout"><img src="{{storemedia url="/free_shipping_callout.jpg"}}" alt="" width="535" border="0" /></p>
-	</div>
-	<h1>Sites in the center</h1>
-	<p>{{block type="catalog/product" stores_per="5" products_per="2" panles_per="3" template="custom_block/site_list.phtml"}}</p>'
-			);
-			//var_dump($cmsPageData);
-			///echo "pre";
-			$this->createCmsPage($storeid,$cmsPageData);
-			
 		}
-		return $rcatId;
+	}
+	//this needs to be abstracted more
+	public function make_store($website,$storeGroup,$view){
+		//#addWebsite
+		$webid = $website;
+		if(!($webid>0)) return false;
+		//#addStoreGroup
+		$storeGroupId=$storeGroup;
+		//#addStore
+		$sotercode=$view['code'];
+		$store = Mage::getModel('core/store');
+		$store->load($sotercode);
+		if (!empty($store))  return false;
+		$store->setCode($sotercode)
+			->setWebsiteId($website)
+			->setGroupId($storeGroupId)
+			->setName($view['name'])
+			->setIsActive(1)
+			->save();
+		
+		$storeid = $store->getId();		
+		return $storeid;
 	}
 	
 	public function createCmsPage($storeids,$params=array()){
