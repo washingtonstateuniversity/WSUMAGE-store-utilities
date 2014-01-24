@@ -106,10 +106,24 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		}
 		return $rcatId;
 	}
-	
+	public function make_website($site){
+		$website = Mage::getModel('core/website');
+		if(!$this->checkForWebsite($site['code'])){
+			$website->setCode($site['code'])
+				->setName($site['name'])
+				->save();
+		}else{
+			$website->load($site['code']);
+			if (empty($website)) {
+				return false;
+			}
+		}
+		$webid = $website->getId();
+		return $webid;
+	}
 	
 	//this needs to be abstracted more
-	public function make_store($rootCategory,$site,$store,$view,$url="",$movingcat=-1){
+	public function make_store($rootCategory,$website,$store,$view,$url="",$movingcat=-1){
 		//#adding a root cat for the new store we will create
 		$rcatId=$rootCategory;
 		if($rcatId>0){
@@ -130,18 +144,7 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 			}
 	
 		//#addWebsite
-			$website = Mage::getModel('core/website');
-			if(!$this->checkForWebsite($site['code'])){
-				$website->setCode($site['code'])
-					->setName($site['name'])
-					->save();
-			}else{
-				$website->load($site['code']);
-				if (empty($website)) {
-					return false;
-				}
-			}
-			$webid = $website->getId();
+			$webid = $website;
 			if(!($webid>0)) return false;
 		//#addStoreGroup
 			$storeGroup = Mage::getModel('core/store_group');
