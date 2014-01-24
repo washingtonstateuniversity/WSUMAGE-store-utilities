@@ -122,21 +122,19 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		return $webid;
 	}
 	public function make_storeGroup($store,$url,$website,$rootCategory){
-			$storeGroup = Mage::getModel('core/store_group');
-			$storeGroup->setWebsiteId($website)
-				->setName($store['name'])
-				->setRootCategoryId($rootCategory)
-				->save();
-			$cDat = new Mage_Core_Model_Config();
-			$cDat->saveConfig('web/unsecure/base_url', "http://".$url.'/', 'websites', $website);
-			$cDat->saveConfig('web/secure/base_url', "https://".$url.'/', 'websites', $website);
-			
-			$storeGroupId=$storeGroup->getId();
-			return $storeGroupId;
+		$storeGroup = Mage::getModel('core/store_group');
+		$storeGroup->setWebsiteId($website)
+			->setName($store['name'])
+			->setRootCategoryId($rootCategory)
+			->save();
+		$cDat = new Mage_Core_Model_Config();
+		$cDat->saveConfig('web/unsecure/base_url', "http://".$url.'/', 'websites', $website);
+		$cDat->saveConfig('web/secure/base_url', "https://".$url.'/', 'websites', $website);
+		
+		$storeGroupId=$storeGroup->getId();
+		return $storeGroupId;
 	}
-	//this needs to be abstracted more
-	public function make_store($rootCategory,$website,$storeGroup,$view,$movingcat=-1){
-		//#adding a root cat for the new store we will create
+	public function reparentCategory($rootCategory,$movingcat){
 		$rcatId=$rootCategory;
 		if($rcatId>0){
 			if($movingcat>0){
@@ -155,6 +153,9 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 				}
 			}
 		}
+	}
+	//this needs to be abstracted more
+	public function make_store($website,$storeGroup,$view){
 		//#addWebsite
 		$webid = $website;
 		if(!($webid>0)) return false;
