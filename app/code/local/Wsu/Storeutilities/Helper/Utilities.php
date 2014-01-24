@@ -121,9 +121,21 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		$webid = $website->getId();
 		return $webid;
 	}
-	
+	public function make_storeGroup($store,$url,$website,$rootCategory){
+			$storeGroup = Mage::getModel('core/store_group');
+			$storeGroup->setWebsiteId($website)
+				->setName($store['name'])
+				->setRootCategoryId($rootCategory)
+				->save();
+			$cDat = new Mage_Core_Model_Config();
+			$cDat->saveConfig('web/unsecure/base_url', "http://".$url.'/', 'websites', $website);
+			$cDat->saveConfig('web/secure/base_url', "https://".$url.'/', 'websites', $website);
+			
+			$storeGroupId=$storeGroup->getId();
+			return $storeGroupId;
+	}
 	//this needs to be abstracted more
-	public function make_store($rootCategory,$website,$store,$view,$url="",$movingcat=-1){
+	public function make_store($rootCategory,$website,$storeGroup,$view,$movingcat=-1){
 		//#adding a root cat for the new store we will create
 		$rcatId=$rootCategory;
 		if($rcatId>0){
@@ -147,22 +159,15 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 			$webid = $website;
 			if(!($webid>0)) return false;
 		//#addStoreGroup
-			$storeGroup = Mage::getModel('core/store_group');
-			$storeGroup->setWebsiteId($webid)
-				->setName($store['name'])
-				->setRootCategoryId($rcatId)
-				->save();
-			$cDat = new Mage_Core_Model_Config();
-			$cDat->saveConfig('web/unsecure/base_url', "http://".$url.'/', 'websites', $webid);
-			$cDat->saveConfig('web/secure/base_url', "https://".$url.'/', 'websites', $webid);
+			$storeGroupId=$storeGroup;
 		//#addStore
 			$sotercode=$view['code'];
 			$store = Mage::getModel('core/store');
 			$store->load($sotercode);
 			if (!empty($store))  return false;
 			$store->setCode($sotercode)
-				->setWebsiteId($storeGroup->getWebsiteId())
-				->setGroupId($storeGroup->getId())
+				->setWebsiteId($website)
+				->setGroupId($storeGroupId)
 				->setName($view['name'])
 				->setIsActive(1)
 				->save();
