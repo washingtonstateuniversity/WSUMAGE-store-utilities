@@ -5,6 +5,7 @@ class Wsu_Storeutilities_Helper_Core_Data extends Mage_Core_Helper_Data {
     const XML_PATH_MINIFY_ENABLE_YUICOMPRESSOR 	= 'storeutilities_conf/minify/enable_yuicompressor';
     const XML_PATH_MINIFY_CSS_FILES 			= 'storeutilities_conf/minify/css_files';
     const XML_PATH_MINIFY_JS_FILES 				= 'storeutilities_conf/minify/js_files';
+	const XML_PATH_MINIFY_TIMEOUT 				= 'storeutilities_conf/minify/minify_timeout';
     public function isYUICompressEnabled() {
         return Mage::getStoreConfigFlag(self::XML_PATH_MINIFY_ENABLE_YUICOMPRESSOR);
     }
@@ -14,8 +15,17 @@ class Wsu_Storeutilities_Helper_Core_Data extends Mage_Core_Helper_Data {
     public function canMinifyCss() {
         return Mage::getStoreConfigFlag(self::XML_PATH_MINIFY_CSS_FILES);
     }
+    public function getMinifyTimeout() {
+        return Mage::getStoreConfig(self::XML_PATH_MINIFY_TIMEOUT);
+    }
     public function minifyJsCss($data, $target) {
+		$current_max_execution_time = ini_get('max_execution_time');
+		$wasTimeoutSet=false;
         if ($this->canMinifyCss() || $this->canMinifyJs()) {
+			//setting time casue there could be tons to do
+			$timeout = $this->getMinifyTimeout();
+			ini_set('max_execution_time', $timeout>30?$timeout:30); 
+			$wasTimeoutSet=true;
             if ($this->isYUICompressEnabled()) {
                 Minify_YUICompressor::$jarFile = Mage::getBaseDir() . DS . 'bin' . DS . 'yuicompressor-2.4.7.jar';
                 Minify_YUICompressor::$tempDir = realpath(sys_get_temp_dir());
@@ -58,7 +68,9 @@ class Wsu_Storeutilities_Helper_Core_Data extends Mage_Core_Helper_Data {
                 default:
                     return false;
             }
+			
         }
+		if($wasTimeoutSet)ini_set('max_execution_time', $current_timeout>30?$current_timeout:30); 
         return $data;
     }
     /**

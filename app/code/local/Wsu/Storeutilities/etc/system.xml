@@ -53,7 +53,7 @@
           <show_in_store>1</show_in_store>
           <expanded>1</expanded>
           <fields>
-            <active translate="label">
+            <active translate="label comment">
               <label>Enabled</label>
               <frontend_type>select</frontend_type>
               <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -62,7 +62,7 @@
               <show_in_website>1</show_in_website>
               <show_in_store>1</show_in_store>
             </active>
-            <fejquery translate="label">
+            <fejquery translate="label comment">
               <label>Load jQuery in the Frontend</label>
               <frontend_type>select</frontend_type>
               <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -71,7 +71,7 @@
               <show_in_website>1</show_in_website>
               <show_in_store>1</show_in_store>
             </fejquery>
-            <fejquerymigrate translate="label">
+            <fejquerymigrate translate="label comment">
               <label>Load jQuery migratation tool in th Frontend</label>
               <frontend_type>select</frontend_type>
               <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -83,7 +83,7 @@
 					<fejquery>1</fejquery>
 				</depends>
             </fejquerymigrate>
-            <fejqueryui translate="label">
+            <fejqueryui translate="label comment">
               <label>Load jQuery UI in the Frontend</label>
               <frontend_type>select</frontend_type>
               <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -95,7 +95,7 @@
 					<fejquery>1</fejquery>
 				</depends>
             </fejqueryui>
-            <fejqueryuicss translate="label">
+            <fejqueryuicss translate="label comment">
               <label>Load jQuery UI Base CSS in the Frontend</label>
               <frontend_type>select</frontend_type>
               <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -112,7 +112,7 @@
 			
 			
 			
-            <adminjquery translate="label">
+            <adminjquery translate="label comment">
               <label>Load jQuery in the Admin</label>
               <frontend_type>select</frontend_type>
               <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -121,7 +121,7 @@
               <show_in_website>1</show_in_website>
               <show_in_store>1</show_in_store>
             </adminjquery>
-            <adminjquerymigrate translate="label">
+            <adminjquerymigrate translate="label comment">
               <label>Load jQuery migratation tool in th Admin</label>
               <frontend_type>select</frontend_type>
               <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -134,7 +134,7 @@
 				</depends>
             </adminjquerymigrate>
 			
-            <adminjqueryui translate="label">
+            <adminjqueryui translate="label comment">
               <label>Load jQuery UI in the Admin</label>
               <frontend_type>select</frontend_type>
               <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -146,7 +146,7 @@
 					<adminjquery>1</adminjquery>
 				</depends>
             </adminjqueryui>
-            <adminjqueryuicss translate="label">
+            <adminjqueryuicss translate="label comment">
               <label>Load jQuery UI Base CSS in the Admin</label>
               <frontend_type>select</frontend_type>
               <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -171,7 +171,7 @@
 			<show_in_website>1</show_in_website>
 			<show_in_store>1</show_in_store>
 			<fields>
-				<minify_html_output translate="label">
+				<minify_html_output translate="label comment">
 					<label>Minify Frontend HTML Output</label>
 					<frontend_type>select</frontend_type>
 					<source_model>adminhtml/system_config_source_yesno</source_model>
@@ -180,7 +180,7 @@
 					<show_in_website>1</show_in_website>
 					<show_in_store>1</show_in_store>
 				</minify_html_output>
-				<minify_admin_html_output translate="label">
+				<minify_admin_html_output translate="label comment">
 					<label>Minify Admin HTML Output</label>
 					<frontend_type>select</frontend_type>
 					<source_model>adminhtml/system_config_source_yesno</source_model>
@@ -199,7 +199,7 @@
 			<show_in_website>1</show_in_website>
 			<show_in_store>1</show_in_store>
 			<fields>
-				<enable_yuicompressor translate="label">
+				<enable_yuicompressor translate="label comment">
 					<label>Enable YUICompress</label>
 					<comment>this allows better minifications results. (requires Java)</comment>
 					<frontend_type>select</frontend_type>
@@ -209,7 +209,7 @@
 					<show_in_website>1</show_in_website>
 					<show_in_store>1</show_in_store>
 				</enable_yuicompressor>
-				<js_files translate="label">
+				<js_files translate="label comment">
 					<label>Minify JavaScript Merged Files</label>
 					<comment>Minification is performed only on merged files</comment>
 					
@@ -220,7 +220,7 @@
 					<show_in_website>1</show_in_website>
 					<show_in_store>1</show_in_store>
 				</js_files>
-				<css_files translate="label">
+				<css_files translate="label comment">
 					<label>Minify CSS Merged Files</label>
 					<comment>Minification is performed only on merged files</comment>
 					<frontend_type>select</frontend_type>
@@ -230,6 +230,15 @@
 					<show_in_website>1</show_in_website>
 					<show_in_store>1</show_in_store>
 				</css_files>
+				<minify_timeout translate="label comment">
+					<label>Minify Set a custom php timeout</label>
+					<comment>Minification and merged files can take a bit the first time, so if you are running into issues then you can increase this to advoid the issue</comment>
+					<frontend_type>text</frontend_type>
+					<sort_order>40</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+				</minify_timeout>
 			</fields>
 		</minify>
 

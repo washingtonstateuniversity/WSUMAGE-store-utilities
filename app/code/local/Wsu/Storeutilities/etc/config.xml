@@ -179,6 +179,7 @@
       <minify>
         <js_files>1</js_files>
         <css_files>1</css_files>
+		<minify_timeout>300</minify_timeout>
       </minify>
       <general_settings>
         <fejquery>1</fejquery>
