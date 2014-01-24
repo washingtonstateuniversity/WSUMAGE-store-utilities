@@ -172,11 +172,8 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 			->setIsActive(1)
 			->save();
 		
-		$storeid = $store->getId();
-		$this->moveStoreProducts($webid,$storeid,$rcatId);
-
-		
-		return $rcatId;
+		$storeid = $store->getId();		
+		return $storeid;
 	}
 	
 	public function createCmsPage($storeids,$params=array()){
