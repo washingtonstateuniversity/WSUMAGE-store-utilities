@@ -102,12 +102,16 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 			if($movingcat>0){
 				$category = Mage::getModel( 'catalog/category' )->load($movingcat);
 				$targetcategory = Mage::getModel( 'catalog/category' )->load($rcatId);
+				$_category = Mage::registry('current_category');
 				if(!empty($category) && !empty($targetcategory)){
 					Mage::unregister('category');
 					Mage::unregister('current_category');
 					Mage::register('category', $category);
 					Mage::register('current_category', $category);
-					$category->move($rcatId);
+					$_category = Mage::registry('current_category');
+					if(!empty($_category) && $_category->getId()>0){
+						$category->move($rcatId);
+					}
 				}
 			}
 	
