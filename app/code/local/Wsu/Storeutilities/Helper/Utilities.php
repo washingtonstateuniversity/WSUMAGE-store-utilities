@@ -154,55 +154,28 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 					}
 				}
 			}
-	
-		//#addWebsite
-			$webid = $website;
-			if(!($webid>0)) return false;
-		//#addStoreGroup
-			$storeGroupId=$storeGroup;
-		//#addStore
-			$sotercode=$view['code'];
-			$store = Mage::getModel('core/store');
-			$store->load($sotercode);
-			if (!empty($store))  return false;
-			$store->setCode($sotercode)
-				->setWebsiteId($website)
-				->setGroupId($storeGroupId)
-				->setName($view['name'])
-				->setIsActive(1)
-				->save();
-			
-			$storeid = $store->getId();
-			$this->moveStoreProducts($webid,$storeid,$rcatId);
-			
-			
-			$cmsPageData = array(
-				'title' => $site['name'],
-				'root_template' => 'one_column',
-				'meta_keywords' => 'meta,keywords',
-				'meta_description' => 'meta description',
-				'identifier' => 'home',
-				'content_heading' => '',
-				'is_active' => 1,
-				'stores' => array($storeid),//available for all store views
-				
-				//this should be loaded
-				'content' => '<div class="col-left side-col">
-	<p class="home-callout"><a href="{{store direct_url="#"}}"> <img src="{{storemedia url="/ph_callout_left_top.jpg"}}" alt="" border="0" /> </a></p>
-	<p class="home-callout"><img src="{{storemedia url="/ph_callout_left_rebel.jpg"}}" alt="" border="0" /></p>
-	{{block type="tag/popular" template="tag/popular.phtml"}}</div>
-	<div class="home-spot">
-	<p class="home-callout"><img src="{{storemedia url="/home_main_callout.jpg"}}" alt="" width="535" border="0" /></p>
-	<p class="home-callout"><img src="{{storemedia url="/free_shipping_callout.jpg"}}" alt="" width="535" border="0" /></p>
-	</div>
-	<h1>Sites in the center</h1>
-	<p>{{block type="catalog/product" stores_per="5" products_per="2" panles_per="3" template="custom_block/site_list.phtml"}}</p>'
-			);
-			//var_dump($cmsPageData);
-			///echo "pre";
-			$this->createCmsPage($storeid,$cmsPageData);
-			
 		}
+		//#addWebsite
+		$webid = $website;
+		if(!($webid>0)) return false;
+		//#addStoreGroup
+		$storeGroupId=$storeGroup;
+		//#addStore
+		$sotercode=$view['code'];
+		$store = Mage::getModel('core/store');
+		$store->load($sotercode);
+		if (!empty($store))  return false;
+		$store->setCode($sotercode)
+			->setWebsiteId($website)
+			->setGroupId($storeGroupId)
+			->setName($view['name'])
+			->setIsActive(1)
+			->save();
+		
+		$storeid = $store->getId();
+		$this->moveStoreProducts($webid,$storeid,$rcatId);
+
+		
 		return $rcatId;
 	}
 	
