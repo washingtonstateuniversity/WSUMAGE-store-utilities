@@ -108,19 +108,20 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 	}
 	public function make_website($site){
 		$website = Mage::getModel('core/website');
-		if(!$this->checkForWebsite($site['code'])){
+		$website->load($site['code']);
+		if(empty($website)){
 			$website->setCode($site['code'])
 				->setName($site['name'])
 				->save();
-		}else{
-			$website->load($site['code']);
-			if (empty($website)) {
-				Mage::log("Tried to create website '{$site['code']}' but failed: ", Zend_Log::ERR);
-				return false;
-			}
+		}
+		$website->load($site['code']);	
+		if (empty($website)) {
+			Mage::log("Tried to create website '{$site['code']}' but failed: ", Zend_Log::ERR);
+			return false;
 		}
 		$webid = $website->getId();
 		if($webid>0){
+			Mage::app()->getConfig()->reinit();
 			return $webid;
 		}else{
 			Mage::log("Tried to create website '{$site['code']}' but failed (thought it was there): ", Zend_Log::ERR);
@@ -128,21 +129,43 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		}
 		
 	}
-	public function make_storeGroup($store,$url,$website,$rootCategory){
+	public function make_storeGroup($store,$url,$websiteId,$rootCategory){
 		$storeGroup = Mage::getModel('core/store_group');
-		$storeGroup->setWebsiteId($website)
-			->setName($store['name'])
-			->setRootCategoryId($rootCategory)
-			->save();
-		$cDat = new Mage_Core_Model_Config();
-		$cDat->saveConfig('web/unsecure/base_url', "http://".$url.'/', 'websites', $website);
-		$cDat->saveConfig('web/secure/base_url', "https://".$url.'/', 'websites', $website);
+		$storeGroupName = $store['name'];
+		
+		$website = Mage::app()->getWebsite($websiteId);
+		$groups = $website->getGroups();
 
+		foreach($groups as $group){
+			$gname = $group->getName();
+			if($gname = $storeGroupName){
+				$storeGroup->load($group->getGroupId());
+			}
+		}
+		
+		if(empty($storeGroup)){
+			$storeGroup->setData(
+				array(
+					'root_category_id' => $rootCategory,
+					'website_id' => $websiteId,
+					'name' => $storeGroupName,
+				)
+			);		
+			$storeGroup->save()->load();
+			$cDat = new Mage_Core_Model_Config();
+			$cDat->saveConfig('web/unsecure/base_url', "http://".$url.'/', 'websites', $websiteId);
+			$cDat->saveConfig('web/secure/base_url', "https://".$url.'/', 'websites', $websiteId);
+		}
+		if (empty($storeGroup)) {
+			Mage::log("Tried to create storeGroup '{$storeGroupCode}' but failed: ", Zend_Log::ERR);
+			return false;
+		}
 		$storeGroupId=$storeGroup->getId();
 		if($storeGroupId>0){
+			Mage::app()->getConfig()->reinit();
 			return $storeGroupId;
 		}else{
-			Mage::log("Tried to create Store Group '{$store['name']}' but failed: ", Zend_Log::ERR);
+			Mage::log("Tried to create Store Group '{$storeGroupCode}' but failed: ", Zend_Log::ERR);
 			return false;
 		}
 	}
@@ -168,19 +191,29 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 	}
 	//this needs to be abstracted more
 	public function make_store($webSiteId,$storeGroupId,$view){
-		$sotercode=$view['code'];
+		$storecode=$view['code'];
 		$store = Mage::getModel('core/store');
-		$store->load($sotercode);
-		if (!empty($store))  return false;
-		$store->setCode($sotercode)
-			->setWebsiteId($webSiteId)
-			->setGroupId($storeGroupId)
-			->setName($view['name'])
-			->setIsActive(1)
-			->save();
 		
+		$group = Mage::getModel('core/store_group')->load($storeGroupId);
+        $stores = $group->getStoreCollection();
+		foreach($stores as $store){
+			$sname = $store->getCode();
+			if($sname = $storecode){
+				$store->load($store->getStoreId());
+			}
+		}
+		if( empty($store) || !($store->getId()>0) ){
+			$store->setCode($storecode)
+				->setWebsiteId($webSiteId)
+				->setGroupId($storeGroupId)
+				->setName($view['name'])
+				->setIsActive(1)
+				->save()
+				->load();
+		}
 		$storeid = $store->getId();	
 		if($storeid>0){
+			Mage::app()->getConfig()->reinit();
 			return $storeid;
 		}else{
 			Mage::log("Tried to create store view '{$sotercode}' but failed: ", Zend_Log::ERR);
