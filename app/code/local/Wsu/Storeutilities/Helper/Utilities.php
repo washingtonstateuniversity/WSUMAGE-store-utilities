@@ -158,7 +158,7 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 			$cDat->saveConfig('web/secure/base_url', "https://".$url.'/', 'websites', $websiteId);
 		}
 
-		if(empty($storeGroup) || !($storeGroup->getId()>0) ){
+		if(!empty($storeGroup) && ($storeGroup->getId()>0) ){
 			Mage::app()->getConfig()->reinit();
 			return $storeGroup->getId();
 		}else{
