@@ -201,13 +201,16 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 			}
 		}
 		if( empty($store) || !($store->getId()>0) ){
-			$store->setCode($storecode)
-				->setWebsiteId($webSiteId)
-				->setGroupId($storeGroupId)
-				->setName($view['name'])
-				->setIsActive(1)
-				->save()
-				->load();
+			$store->setData(
+					array(
+						'website_id' => $webSiteId,
+						'name' => $view['name'],
+						'code' => $storecode,
+						'group_id' => $storeGroupId,
+						'is_active' => 1,
+					)
+			);
+			$store->save()->load();
 		}
 		$storeid = $store->getId();	
 		if($storeid>0){
