@@ -115,11 +115,18 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		}else{
 			$website->load($site['code']);
 			if (empty($website)) {
+				Mage::log("Tried to create website '{$site['code']}' but failed: ", Zend_Log::ERR);
 				return false;
 			}
 		}
 		$webid = $website->getId();
-		return $webid;
+		if($webid>0){
+			return $webid;
+		}else{
+			Mage::log("Tried to create website '{$site['code']}' but failed (thought it was there): ", Zend_Log::ERR);
+			return false;
+		}
+		
 	}
 	public function make_storeGroup($store,$url,$website,$rootCategory){
 		$storeGroup = Mage::getModel('core/store_group');
@@ -130,9 +137,14 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		$cDat = new Mage_Core_Model_Config();
 		$cDat->saveConfig('web/unsecure/base_url', "http://".$url.'/', 'websites', $website);
 		$cDat->saveConfig('web/secure/base_url', "https://".$url.'/', 'websites', $website);
-		
+
 		$storeGroupId=$storeGroup->getId();
-		return $storeGroupId;
+		if($storeGroupId>0){
+			return $storeGroupId;
+		}else{
+			Mage::log("Tried to create Store Group '{$store['name']}' but failed: ", Zend_Log::ERR);
+			return false;
+		}
 	}
 	public function reparentCategory($rootCategory,$movingcat){
 		$rcatId=$rootCategory;
@@ -155,26 +167,25 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		}
 	}
 	//this needs to be abstracted more
-	public function make_store($website,$storeGroup,$view){
-		//#addWebsite
-		$webid = $website;
-		if(!($webid>0)) return false;
-		//#addStoreGroup
-		$storeGroupId=$storeGroup;
-		//#addStore
+	public function make_store($webSiteId,$storeGroupId,$view){
 		$sotercode=$view['code'];
 		$store = Mage::getModel('core/store');
 		$store->load($sotercode);
 		if (!empty($store))  return false;
 		$store->setCode($sotercode)
-			->setWebsiteId($website)
+			->setWebsiteId($webSiteId)
 			->setGroupId($storeGroupId)
 			->setName($view['name'])
 			->setIsActive(1)
 			->save();
 		
-		$storeid = $store->getId();		
-		return $storeid;
+		$storeid = $store->getId();	
+		if($storeid>0){
+			return $storeid;
+		}else{
+			Mage::log("Tried to create store view '{$sotercode}' but failed: ", Zend_Log::ERR);
+			return false;
+		}
 	}
 	
 	public function createCmsPage($storeids,$params=array()){
