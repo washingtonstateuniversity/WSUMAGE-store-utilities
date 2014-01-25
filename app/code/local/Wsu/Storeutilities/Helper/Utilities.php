@@ -140,6 +140,7 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 			$gname = $group->getName();
 			if($gname = $storeGroupName){
 				$storeGroup->load($group->getGroupId());
+				break;
 			}
 		}
 		
@@ -196,6 +197,7 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 			$sname = $store->getCode();
 			if($sname = $storecode){
 				$store->load($store->getStoreId());
+				break;
 			}
 		}
 		if( empty($store) || !($store->getId()>0) ){
