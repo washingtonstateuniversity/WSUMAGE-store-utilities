@@ -70,7 +70,7 @@ class Wsu_Storeutilities_Helper_Core_Data extends Mage_Core_Helper_Data {
             }
 			
         }
-		if($wasTimeoutSet)ini_set('max_execution_time', $current_timeout>30?$current_timeout:30); 
+		if($wasTimeoutSet)ini_set('max_execution_time', $current_max_execution_time>30?$current_max_execution_time:30); 
         return $data;
     }
     /**
