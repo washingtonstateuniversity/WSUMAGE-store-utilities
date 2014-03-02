@@ -23,6 +23,51 @@ class Wsu_Storeutilities_Adminhtml_Catalog_ProductController extends Mage_Adminh
             }
         }
     }
+	
+
+    /**
+     * Change the attribute set of the product.
+     */
+    public function cleanattributesAction() {
+        $_productIds        = $this->getRequest()->getParam('product');
+        $productIds         = array_map('intval', $_productIds);
+        $affectedProductIds = array();
+        $storeId            = (int) $this->getRequest()->getParam('store', 0);
+        
+        $defaultSetId       = Mage::getSingleton('catalog/product')->getResource()->getEntityType()->getDefaultAttributeSetId();
+        if (!is_array($productIds)) {
+            $this->_getSession()->addError($this->__('Please select product(s)'));
+        } else {
+            try {
+                foreach ($productIds as $productId) {
+                    $product			= Mage::getSingleton('catalog/product')->unsetData()->setStoreId($storeId)->load($productId);
+                    $ptype     			= $product->getTypeID();
+                    $is_simple 			= (!$product->isComposite() && !$product->isSuper());
+                    //at this time we want to just do the simple product types.  Maybe later we can test out for something better
+                    if ($is_simple && $ptype != "bundle") {
+						if(Mage::helper('storeutilities')->hasExt('Wsu_Logger')){
+							$_product=Mage::getModel('cataloginventory/stock_item')->loadByProduct($product);
+							Mage::getModel('wsu_logger/stock_observer')->insertStockMovement($_product, "Cleaned attributes for {$product->getName()} in mass edit");
+						}
+                        $this->_cleanAttributes($product);
+                        $affectedProductIds[] = $product->getEntityId();
+                    } else {
+                        $this->_getSession()->addError($this->__('Skipping product ' . $product->getName() . ' as it is not the base product.'));
+                    }
+                }
+                Mage::dispatchEvent('catalog_product_massupdate_after', array(
+                    'products' => $affectedProductIds
+                ));
+                $this->_getSession()->addSuccess($this->__('Total of %d record(s) were successfully updated', count($affectedProductIds)));
+            }
+            catch (Exception $e) {
+                $this->_getSession()->addException($e, $e->getMessage());
+            }
+        }
+        $this->_redirect('adminhtml/catalog_product/index/', array());
+    }	
+	
+	
     /**
      * Change the attribute set of the product.
      */
