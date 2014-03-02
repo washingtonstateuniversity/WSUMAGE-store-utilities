@@ -1,5 +1,7 @@
 <?php
 class Wsu_Storeutilities_Adminhtml_Catalog_ProductController extends Mage_Adminhtml_Controller_Action {
+	
+	public $cleared_attrs = 0;
     /**
      * Attempt to remove any required attributes linked to the product that are not in the new attribute set.
      * 
@@ -16,6 +18,7 @@ class Wsu_Storeutilities_Adminhtml_Catalog_ProductController extends Mage_Adminh
                         $write->quoteInto('attribute_id=?', $attribute['id']),
                         $write->quoteInto('entity_id=?', $product->getId())
                     )));
+					$this->cleared_attrs++;
                 }
             }
             catch (Exception $e) {
@@ -29,12 +32,12 @@ class Wsu_Storeutilities_Adminhtml_Catalog_ProductController extends Mage_Adminh
      * Change the attribute set of the product.
      */
     public function cleanattributesAction() {
-        $_productIds        = $this->getRequest()->getParam('product');
-        $productIds         = array_map('intval', $_productIds);
-        $affectedProductIds = array();
-        $storeId            = (int) $this->getRequest()->getParam('store', 0);
-        
-        $defaultSetId       = Mage::getSingleton('catalog/product')->getResource()->getEntityType()->getDefaultAttributeSetId();
+        $_productIds        	= $this->getRequest()->getParam('product');
+        $productIds         	= array_map('intval', $_productIds);
+        $affectedProductIds 	= array();
+        $storeId            	= (int) $this->getRequest()->getParam('store', 0);
+        $this->cleared_attrs	=0;
+        $defaultSetId       	= Mage::getSingleton('catalog/product')->getResource()->getEntityType()->getDefaultAttributeSetId();
         if (!is_array($productIds)) {
             $this->_getSession()->addError($this->__('Please select product(s)'));
         } else {
@@ -58,7 +61,7 @@ class Wsu_Storeutilities_Adminhtml_Catalog_ProductController extends Mage_Adminh
                 Mage::dispatchEvent('catalog_product_massupdate_after', array(
                     'products' => $affectedProductIds
                 ));
-                $this->_getSession()->addSuccess($this->__('Total of %d record(s) were successfully updated', count($affectedProductIds)));
+                $this->_getSession()->addSuccess($this->__('Total of %d record(s) were successfully updated with %d attributes cleared.', count($affectedProductIds),$this->cleared_attrs));
             }
             catch (Exception $e) {
                 $this->_getSession()->addException($e, $e->getMessage());
