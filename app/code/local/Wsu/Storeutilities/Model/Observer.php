@@ -113,6 +113,10 @@ class Wsu_Storeutilities_Model_Observer{
 						)
 					)
 				));
+				$block->getMassactionBlock()->addItem('wsu_storeutilities_cleanattributes', array(
+					'label'=> Mage::helper('catalog')->__('Clean attributes'),
+					'url'  => $block->getUrl('*/*/cleanattributes', array('_current'=>true))
+				));
 	        }		
 			
 			if (Mage::getSingleton('admin/session')->isAllowed('catalog/update_attributes')){
@@ -121,8 +125,7 @@ class Wsu_Storeutilities_Model_Observer{
 					'url'  => $block->getUrl('*/*/startchangecategories', array('_current'=>true))
 				));
 			}			
-
-					
+	
 		}
 	}
 	
