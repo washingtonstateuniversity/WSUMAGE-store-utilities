@@ -9,6 +9,14 @@ class Wsu_Storeutilities_Block_Adminhtml_Edit_Grid extends Mage_Adminhtml_Block_
     protected function _prepareCollection() {
         $collection = Mage::getModel('core/website')->getCollection();
         $this->setCollection($collection);
+		
+		if(Mage::helper('core')->isModuleEnabled('Wsu_Storepartitions')){
+			$role = Mage::getSingleton('storepartitions/role');
+			if ($role->isPermissionsEnabled()) {
+				$collection->addIdFilter($role->getAllowedWebsiteIds());
+			}
+		}
+
         parent::_prepareCollection();
         return $this;
     }
