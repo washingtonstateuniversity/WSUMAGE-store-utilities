@@ -113,7 +113,7 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 			$website->setCode($site['code'])
 				->setName($site['name'])
 				->save()
-				->load();
+				->load($site['code']);
 		}
 		if (empty($website)) {
 			Mage::log("Tried to create website '{$site['code']}' but failed: ", Zend_Log::ERR);
@@ -152,7 +152,8 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 					'name' => $storeGroupName,
 				)
 			);		
-			$storeGroup->save()->load();
+			$storeGroup->save();
+			$storeGroup->load($storeGroup->getId());
 			$cDat = new Mage_Core_Model_Config();
 			$cDat->saveConfig('web/unsecure/base_url', "http://".$url.'/', 'websites', $websiteId);
 			$cDat->saveConfig('web/secure/base_url', "https://".$url.'/', 'websites', $websiteId);
@@ -210,7 +211,8 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 						'is_active' => 1,
 					)
 			);
-			$store->save()->load();
+			$store->save();
+			$store->load($store->getId());
 		}
 		$storeid = $store->getId();	
 		if($storeid>0){
