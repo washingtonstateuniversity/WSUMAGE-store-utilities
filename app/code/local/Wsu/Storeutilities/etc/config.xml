@@ -184,6 +184,9 @@
         <minify_admin_html_output>1</minify_admin_html_output>
         <minify_html_output>1</minify_html_output>
       </html>
+	  <dev>
+	  	<show_block_type>0</show_block_type>
+	  </dev>
       <minify>
         <js_files>1</js_files>
         <css_files>1</css_files>
