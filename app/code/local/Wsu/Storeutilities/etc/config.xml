@@ -111,10 +111,10 @@
     <events>
 		<core_block_abstract_to_html_before>
 			<observers>
-				<load_form>
+				<load_helper>
 					<class>wsu_storeutilities/observer</class>
 					<method>alter_output</method>
-				</load_form>
+				</load_helper>
 			</observers>
 		</core_block_abstract_to_html_before>
       <controller_action_postdispatch>
@@ -144,7 +144,14 @@
 		</updates>
 	</layout>
     <events>
-
+		<core_block_abstract_to_html_before>
+			<observers>
+				<load_helper>
+					<class>wsu_storeutilities/observer</class>
+					<method>alter_output</method>
+				</load_helper>
+			</observers>
+		</core_block_abstract_to_html_before>
       <adminhtml_widget_container_html_before>
         <observers>
           <wsu_storeutilities_injectStoreutilitiesButton>
@@ -185,7 +192,8 @@
         <minify_html_output>1</minify_html_output>
       </html>
 	  <dev>
-	  	<show_block_type>0</show_block_type>
+	  	<show_block_type_fe>0</show_block_type_fe>
+		<show_block_type_admin>0</show_block_type_admin>
 	  </dev>
       <minify>
         <js_files>1</js_files>
