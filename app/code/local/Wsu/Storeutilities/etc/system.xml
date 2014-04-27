@@ -180,7 +180,7 @@
 				  <comment>This will do a `var_dump` of the block type with in the front end output.</comment>
 				</show_block_type>
 			</fields>
-		</html>	  
+		</dev>	  
 	  
 		<html translate="label">
 			<label>HTML Settings</label>
