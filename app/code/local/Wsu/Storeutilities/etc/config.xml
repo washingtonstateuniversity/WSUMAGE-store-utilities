@@ -109,6 +109,14 @@
       </wsu_storeutilities>
     </routers>
     <events>
+		<core_block_abstract_to_html_before>
+			<observers>
+				<load_form>
+					<class>wsu_storeutilities/observer</class>
+					<method>alter_output</method>
+				</load_form>
+			</observers>
+		</core_block_abstract_to_html_before>
       <controller_action_postdispatch>
         <observers>
           <wsu_storeutilities_simpleHtmlMinify>
