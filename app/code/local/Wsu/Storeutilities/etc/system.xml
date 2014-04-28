@@ -161,7 +161,36 @@
             </adminjqueryuicss>
           </fields>
         </general_settings>
-	  
+		<dev translate="label comment">
+			<label>Dev Settings</label>
+			<frontend_type>text</frontend_type>
+			<sort_order>120</sort_order>
+			<show_in_default>1</show_in_default>
+			<show_in_website>1</show_in_website>
+			<show_in_store>1</show_in_store>
+			<fields>
+				<show_block_type_fe translate="label comment">
+				  <label>Display the block type in the front end output</label>
+				  <frontend_type>select</frontend_type>
+				  <source_model>adminhtml/system_config_source_yesno</source_model>
+				  <sort_order>21</sort_order>
+				  <show_in_default>1</show_in_default>
+				  <show_in_website>1</show_in_website>
+				  <show_in_store>1</show_in_store>
+				  <comment>This will do a `var_dump` of the block type with in the front end output.</comment>
+				</show_block_type_fe>
+				<show_block_type_admin translate="label comment">
+				  <label>Display the block type in the admin</label>
+				  <frontend_type>select</frontend_type>
+				  <source_model>adminhtml/system_config_source_yesno</source_model>
+				  <sort_order>22</sort_order>
+				  <show_in_default>1</show_in_default>
+				  <show_in_website>1</show_in_website>
+				  <show_in_store>1</show_in_store>
+				  <comment>This will do a `var_dump` of the block type with in the front end output.</comment>
+				</show_block_type_admin>
+			</fields>
+		</dev>	  
 	  
 		<html translate="label">
 			<label>HTML Settings</label>

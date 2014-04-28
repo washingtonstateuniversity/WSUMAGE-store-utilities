@@ -109,6 +109,14 @@
       </wsu_storeutilities>
     </routers>
     <events>
+		<core_block_abstract_to_html_before>
+			<observers>
+				<load_helper>
+					<class>wsu_storeutilities/observer</class>
+					<method>alter_output</method>
+				</load_helper>
+			</observers>
+		</core_block_abstract_to_html_before>
       <controller_action_postdispatch>
         <observers>
           <wsu_storeutilities_simpleHtmlMinify>
@@ -136,7 +144,14 @@
 		</updates>
 	</layout>
     <events>
-
+		<core_block_abstract_to_html_before>
+			<observers>
+				<load_helper>
+					<class>wsu_storeutilities/observer</class>
+					<method>alter_output</method>
+				</load_helper>
+			</observers>
+		</core_block_abstract_to_html_before>
       <adminhtml_widget_container_html_before>
         <observers>
           <wsu_storeutilities_injectStoreutilitiesButton>
@@ -176,6 +191,10 @@
         <minify_admin_html_output>1</minify_admin_html_output>
         <minify_html_output>1</minify_html_output>
       </html>
+	  <dev>
+	  	<show_block_type_fe>0</show_block_type_fe>
+		<show_block_type_admin>0</show_block_type_admin>
+	  </dev>
       <minify>
         <js_files>1</js_files>
         <css_files>1</css_files>

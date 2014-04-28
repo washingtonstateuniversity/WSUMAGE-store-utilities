@@ -7,6 +7,17 @@
  */
 class Wsu_Storeutilities_Model_Observer{
 
+	public function alter_output($observer){
+		if(	Mage::getStoreConfig('storeutilities_conf/dev/show_block_type_fe') && !Mage::app()->getStore()->isAdmin()
+			|| Mage::getStoreConfig('storeutilities_conf/dev/show_block_type_admin') && Mage::app()->getStore()->isAdmin()
+		){
+			$_block = $observer->getBlock();
+			$_type = $_block->getType();
+			var_dump( $_type);	
+		}
+	}
+
+
 
 	public function cleanConfigCache(){
 		Mage::helper('storeutilities')->cleanConfigCache();
