@@ -15,7 +15,8 @@ class Wsu_Storeutilities_Block_Cart_Item_Renderer extends Mage_Checkout_Block_Ca
 		$_proId =  $product->getId();
 		$product= Mage::getModel('catalog/product')->load($_proId); 
 		$stores = $product->getStoreIds();
-		$pstore_id = count($stores)>1?array_shift(array_values($product->getStoreIds())):$stores[0];
+		$Storearray=array_values($product->getStoreIds());
+		$pstore_id = count($stores)>1?array_shift($Storearray):$stores[0];
 		$base = Mage::app()->getStore($pstore_id)->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_LINK);
 		$purl = $base.$product->getUrlPath();
 		return $purl;
