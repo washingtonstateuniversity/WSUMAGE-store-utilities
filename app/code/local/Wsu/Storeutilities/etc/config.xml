@@ -28,12 +28,6 @@
       <storeutilities>
         <class>Wsu_Storeutilities_Helper</class>
       </storeutilities>
-      <checkout>
-        <rewrite>
-          <url>Wsu_Storeutilities_Helper_Url</url>
-          <!--<cart>Wsu_Storeutilities_Helper_Cart</cart>-->
-        </rewrite>
-      </checkout>
       <core>
         <rewrite>
           <data>Wsu_Storeutilities_Helper_Core_Data</data>
