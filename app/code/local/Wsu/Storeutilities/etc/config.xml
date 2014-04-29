@@ -13,12 +13,6 @@
       <!-- <checkout>
 		<class>Wsu_Storeutilities_Block</class>
 		</checkout>-->
-      <checkout>
-        <rewrite>
-          <cart_sidebar>Wsu_Storeutilities_Block_Cart_Sidebar</cart_sidebar>
-          <cart_item_renderer>Wsu_Storeutilities_Block_Cart_Item_Renderer</cart_item_renderer>
-        </rewrite>
-      </checkout>
       <page>
         <rewrite>
           <html_head>Wsu_Storeutilities_Block_Html_Head</html_head>
