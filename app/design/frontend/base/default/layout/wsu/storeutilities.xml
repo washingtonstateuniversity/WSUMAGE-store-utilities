@@ -40,7 +40,7 @@
 			</action>
 			<action method="addItem" ifconfig="storeutilities_conf/general_settings/fejquery">
 				<type>cdn_js</type>
-				<name>/js/noconflict.js</name>
+				<name>/js/noConflict.js</name>
 			</action>
 		</reference>
     </jQuery>
