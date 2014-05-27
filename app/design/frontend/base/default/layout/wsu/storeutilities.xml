@@ -4,12 +4,12 @@
 		<reference name="head">
 			<action method="addItem" ifconfig="storeutilities_conf/general_settings/fejqueryuicss">
 				<type>cdn_css</type>
-				<name>//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css</name>
+				<name>//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.min.css</name>
 				<params/>
 				<if/>
 				<cond/>
 				<window_obj>jQuery</window_obj>
-				<local_path>/js/jquery-ui.smoothness.css</local_path>
+				<local_path>/js/jquery-ui.smoothness.min.1.10.4.css</local_path>
 			</action>
 			<action method="addItem" ifconfig="storeutilities_conf/general_settings/fejquery">
 				<type>cdn_js</type>
