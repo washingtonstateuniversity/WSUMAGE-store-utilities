@@ -11,6 +11,10 @@
 				<window_obj>jQuery</window_obj>
 				<local_path>/js/jquery-ui.smoothness.min.1.10.4.css</local_path>
 			</action>
+			<action method="addItem">
+				<type>cdn_css</type>
+				<name>//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css</name>
+			</action>
 			<action method="addItem" ifconfig="storeutilities_conf/general_settings/fejquery">
 				<type>cdn_js</type>
 				<name>//code.jquery.com/jquery-1.11.1.min.js</name>
@@ -42,6 +46,8 @@
 				<type>cdn_js</type>
 				<name>/js/noConflict.js</name>
 			</action>
+
+			
 		</reference>
     </jQuery>
     <default translate="label" module="page">
