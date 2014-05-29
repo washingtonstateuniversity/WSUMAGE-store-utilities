@@ -2,32 +2,32 @@
 <layout version="0.1.0">
     <jQuery>
 		<reference name="head">
-			<action method="addItem" ifconfig="storeutilities_conf/general_settings/adminjquery">
-				<type>cdn_js</type>
-				<name>//code.jquery.com/jquery-1.10.2.min.js</name>
+			<action method="addItem" ifconfig="storeutilities_conf/general_settings/adminjqueryuicss">
+				<type>cdn_css</type>
+				<name>//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.min.css</name>
 				<params/>
 				<if/>
 				<cond/>
 				<window_obj>jQuery</window_obj>
-				<local_path>/js/jquery-1.10.2.min.js</local_path>
+				<local_path>/js/jquery-ui.smoothness.min.1.10.4.css</local_path>
+			</action>
+			<action method="addItem" ifconfig="storeutilities_conf/general_settings/adminjquery">
+				<type>cdn_js</type>
+				<name>//code.jquery.com/jquery-1.11.1.min.js</name>
+				<params/>
+				<if/>
+				<cond/>
+				<window_obj>jQuery</window_obj>
+				<local_path>/js/jquery-1.11.1.min.js</local_path>
 			</action>
 			<action method="addItem" ifconfig="storeutilities_conf/general_settings/adminjqueryui">
 				<type>cdn_js</type>
-				<name>//code.jquery.com/ui/1.10.3/jquery-ui.js</name>
+				<name>//code.jquery.com/ui/1.10.4/jquery-ui.min.js</name>
 				<params/>
 				<if/>
 				<cond/>
 				<window_obj>jQuery</window_obj>
-				<local_path>/js/jquery-ui.1.10.3.js</local_path>
-			</action>
-			<action method="addItem" ifconfig="storeutilities_conf/general_settings/adminjqueryuicss">
-				<type>cdn_css</type>
-				<name>//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css</name>
-				<params/>
-				<if/>
-				<cond/>
-				<window_obj>jQuery</window_obj>
-				<local_path>/js/jquery-ui.smoothness.css</local_path>
+				<local_path>/js/jquery-ui.min.1.10.4.js</local_path>
 			</action>
 			<action method="addItem" ifconfig="storeutilities_conf/general_settings/adminjquerymigrate">
 				<type>cdn_js</type>
