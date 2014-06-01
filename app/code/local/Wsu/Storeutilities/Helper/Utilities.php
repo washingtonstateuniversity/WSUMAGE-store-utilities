@@ -56,7 +56,7 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 	public function moveStoreProducts($website,$store,$rootcat,$children=null){
 		if($children==null)$children = Mage::getModel('catalog/category')->getCategories($rootcat);
 		foreach ($children as $category) {
-			//echo $category->getName();
+			echo $category->getName();
 			$cat_id=$category->getId();
 			$category = Mage::getModel('catalog/category')->load($cat_id);
 			$collection = $category->getProductCollection();
@@ -64,10 +64,12 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 				$oldproductId = $product->getId();
 				$_product=$product->load($productId);
 				$sku = $_product->getSku();
+				echo $sku;
 				try{
 					$_product->setWebsiteIds(array($website)); //assigning website ID
 					$_product->setStoreId($store);
 					$_product->save();
+					echo "moving ".$sku." to web::".$website." store::".$store;//to change to logs later
 				}catch (Exception $e) {
 				   Mage::log('failed on sku:: ',$sku,"\n",$e->getMessage(),"\n", Zend_Log::ERR);
 				}
