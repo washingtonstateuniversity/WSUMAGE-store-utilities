@@ -64,12 +64,12 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 				$oldproductId = $product->getId();
 				$_product=$product->load($productId);
 				$sku = $_product->getSku();
-				echo $sku;
+				print("getting ready to move ".$sku);
 				try{
 					$_product->setWebsiteIds(array($website)); //assigning website ID
 					$_product->setStoreId($store);
 					$_product->save();
-					echo "moving ".$sku." to web::".$website." store::".$store;//to change to logs later
+					print("moving ".$sku." to web::".$website." store::".$store);//to change to logs later
 				}catch (Exception $e) {
 				   Mage::log('failed on sku:: ',$sku,"\n",$e->getMessage(),"\n", Zend_Log::ERR);
 				}
