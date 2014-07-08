@@ -17,3 +17,6 @@ Changes this module will make are as listed.
 1. Adds **[less](http://lesscss.org/)** support for css.  Just use .less and it will compile the styles and then insert normally
 1. Optionally lets a user add jQuery and the jQuery UI to both the admin area and the frontend
 1. More to come
+
+
+To be clear with the load order of the js and css file here in short is what happens.  It'll load all css before the js which is ideal for page load.  It will also load all cdn files before the normal external files, and then lastly it'll load the local files.  All major players agree this is the preferred order.
