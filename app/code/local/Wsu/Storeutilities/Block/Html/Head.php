@@ -79,7 +79,7 @@ class Wsu_Storeutilities_Block_Html_Head extends Mage_Page_Block_Html_Head {
      * @return Mage_Page_Block_Html_Head
      */
     public function addExternalItem($type, $name, $params = null, $if = null, $cond = null) {
-        parent::addItem($type, $name, $params, $if, $cond);
+        $this->addItem($type, $name, $params, $if, $cond);
     }
     /**
      * Remove External Item from HEAD entity
@@ -98,29 +98,31 @@ class Wsu_Storeutilities_Block_Html_Head extends Mage_Page_Block_Html_Head {
      * @return string
      */
     public function getCssJsHtml() {
-        // separate items by types
-        $lines = array();
         foreach ($this->_data['items'] as $item) {
-            /*if (!is_null($item['cond']) && !$this->getData($item['cond']) || !isset($item['name'])) {
-            continue;
-            }*/
-            $if         = !empty($item['if']) ? $item['if'] : '';
-            $params     = !empty($item['params']) ? $item['params'] : '';
-            $window_obj = !empty($item['window_obj']) ? $item['window_obj'] : '';
-            $local_path = !empty($item['local_path']) ? $item['local_path'] : '';
-            switch ($item['type']) {
-                case 'js': // js/*.js
-                case 'skin_js': // skin/*/*.js
-                case 'js_css': // js/*.css
-                case 'skin_css': // skin/*/*.css
-                    $lines[$if][$item['type']][$params][$item['name']] = $item['name'];
-                    break;
-                default:
-                    $this->_separateOtherHtmlHeadElements($lines, $if, $item['type'], $params, $item['name'], $item, $window_obj, $local_path);
-                    break;
-            }
+			/*if (!is_null($item['cond']) && !$this->getData($item['cond']) || !isset($item['name'])) {
+			continue;
+			}*/
+			$if         = !empty($item['if']) ? $item['if'] : '';
+			$params     = !empty($item['params']) ? $item['params'] : '';
+			$window_obj = !empty($item['window_obj']) ? $item['window_obj'] : '';
+			$local_path = !empty($item['local_path']) ? $item['local_path'] : '';
+			switch ($item['type']) {
+				case 'js': // js/*.js
+				case 'skin_js': // skin/*/*.js
+				case 'js_css': // js/*.css
+				case 'skin_css': // skin/*/*.css
+					$lines[$if][$item['type']][$params][$item['name']] = $item['name'];
+					break;
+				default:
+					$this->_separateOtherHtmlHeadElements($lines, $if, $item['type'], $params, $item['name'], $item, $window_obj, $local_path);
+					break;
+			}
         }
-        // prepare HTML
+		
+
+		
+		
+		// prepare HTML
         $shouldMergeJs  = Mage::getStoreConfigFlag('dev/js/merge_files');
         $shouldMergeCss = Mage::getStoreConfigFlag('dev/css/merge_css_files');
         $html           = '';
@@ -131,24 +133,38 @@ class Wsu_Storeutilities_Block_Html_Head extends Mage_Page_Block_Html_Head {
             if (!empty($if)) {
                 $html .= '<!--[if ' . $if . ']>' . "\n";
             }
+
             // cdn CSS first
             if (!empty($items['cdn_css'])) {
                 $html .= $this->_prepareOtherHtmlHeadElements($items['cdn_css']) . "\n";
             }
+            // external_css
+            if (!empty($items['external_css'])) {
+                $html .= $this->_prepareOtherHtmlHeadElements($items['external_css']) . "\n";
+            }			
+			
             // static and skin css
             $html .= $this->_prepareStaticAndSkinElements('<link rel="stylesheet" type="text/css" href="%s"%s />' . "\n", empty($items['js_css']) ? array() : $items['js_css'], empty($items['skin_css']) ? array() : $items['skin_css'], $shouldMergeCss ? array(
                 Mage::getDesign(),
                 'getMergedCssUrl'
             ) : null);
+
             // cdn JS first
             if (!empty($items['cdn_js'])) {
                 $html .= $this->_prepareOtherHtmlHeadElements($items['cdn_js']) . "\n";
             }
+
+            // external_css
+            if (!empty($items['external_js'])) {
+                $html .= $this->_prepareOtherHtmlHeadElements($items['external_js']) . "\n";
+            }
+
             // static and skin javascripts
             $html .= $this->_prepareStaticAndSkinElements('<script type="text/javascript" src="%s"%s></script>' . "\n", empty($items['js']) ? array() : $items['js'], empty($items['skin_js']) ? array() : $items['skin_js'], $shouldMergeJs ? array(
                 Mage::getDesign(),
                 'getMergedJsUrl'
             ) : null);
+
             // other stuff
             if (!empty($items['other'])) {
                 $html .= $this->_prepareOtherHtmlHeadElements($items['other']) . "\n";
@@ -157,6 +173,7 @@ class Wsu_Storeutilities_Block_Html_Head extends Mage_Page_Block_Html_Head {
                 $html .= '<![endif]-->' . "\n";
             }
         }
+
         return $html;
     }
     /**
@@ -181,13 +198,13 @@ class Wsu_Storeutilities_Block_Html_Head extends Mage_Page_Block_Html_Head {
                 $lines[$itemIf]['other'][] = sprintf('<link%s href="%s" />', $params, $href);
                 break;
             case 'external_js':
-                $lines[$itemIf]['other'][] = sprintf('<script type="text/javascript" src="%s" %s></script>', $href, $params);
+                $lines[$itemIf]['external_js'][] = sprintf('<script type="text/javascript" src="%s" %s></script>', $href, $params);
                 break;
             case 'external_css':
-                $lines[$itemIf]['other'][] = sprintf('<link rel="stylesheet" type="text/css" href="%s" %s/>', $href, $params);
+                $lines[$itemIf]['external_css'][] = sprintf('<link rel="stylesheet" type="text/css" href="%s" %s/>', $href, $params);
                 break;
             case 'cdn_css':
-                $lines[$itemIf]['other'][] = sprintf('<link rel="stylesheet" type="text/css" href="%s" %s/>', $href, $params);
+                $lines[$itemIf]['cdn_css'][] = sprintf('<link rel="stylesheet" type="text/css" href="%s" %s/>', $href, $params);
                 break;
             case 'cdn_js':
                 $local = "";

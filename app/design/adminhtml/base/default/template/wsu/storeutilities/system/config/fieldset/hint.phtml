@@ -19,13 +19,15 @@
 <div class="box">
         
     <h3>Extarnal JS/CSS:</h3>
-    <p><em><strong>addExternalItem</strong></em> also do the same as addItem but has 3 new types:</p>
+    <p><em><strong>addExternalItem</strong></em> also do the same as addItem but has 4 new types:</p>
     <ul>
         <li>external_css</li>
         <li>external_js</li>
         <li>cdn_js</li>
+		<li>cdn_css</li>
     </ul>
     <br/>
+	<p>The way this works is that it'll load all css before the js which is ideal for page load.  It will also load all cdn files before the normal external files, and then lastly it'll load the local files.  All major players agree this is the preferred order.</p> 
 <div class="entry-edit-head collapseable"><a class="open" id="storeutilities_conf_html-head" onclick="Fieldset.toggleCollapse('storeutilities_conf_html'); return false;" href="#">Examples</a></div><fieldset class="config collapseable" id="storeutilities_conf_html"><legend>Extarnal JS/CSS Examples</legend>        <code><pre>
 &lt;layout version=&quot;0.1.0&quot;&gt;
     &lt;default&gt;
