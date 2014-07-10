@@ -433,7 +433,7 @@ die();            */
 			$productTypes = array();
 		}
  
-		if($setInfo !== -1 && (isset($setInfo['SetID']) == false || isset($setInfo['GroupID']) == false)) {
+		if($setInfo !== -1 && !empty($setInfo)){//(isset($setInfo['SetID']) == false || isset($setInfo['GroupID']) == false)) {
 			Mage::log("Failed provide both the set-ID and the group-ID of the attribute-set", Zend_Log::ERR);
 			return false;
 		}
@@ -494,8 +494,15 @@ die();            */
 		$model->addData($data);
  
 		if($setInfo !== -1) {
-			$model->setAttributeSetId($setInfo['SetID']);
-			$model->setAttributeGroupId($setInfo['GroupID']);
+			if(isset($setInfo['SetID'])){
+				$model->setAttributeSetId($setInfo['SetID']);
+				$model->setAttributeGroupId($setInfo['GroupID']);
+			}else{
+				foreach($setInfo as $set){
+					$model->setAttributeSetId($set['SetID']);
+					$model->setAttributeGroupId($set['GroupID']);
+				}
+			}
 		}
  
 		$entityTypeID = Mage::getModel('eav/entity')->setType('catalog_product')->getTypeId();
