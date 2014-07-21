@@ -49,6 +49,11 @@
                 <module>HideMe</module> <!-- Fake dependance to hide tab -->
             </depends>
         </xmlconnect>
+		<mgtcommerce> 
+			<depends>
+				<module>HideMe</module> 
+			</depends>
+		</mgtcommerce>
         <system>
             <children>
                 <convert>
