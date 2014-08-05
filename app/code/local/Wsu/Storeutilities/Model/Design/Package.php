@@ -67,12 +67,15 @@ class Wsu_Storeutilities_Model_Design_Package extends Mage_Core_Model_Design_Pac
 	}
 	
 	private function getCacheBreaker($files) {
-		$times="";
-		foreach ($files as $file) {
-			if (file_exists($file)) {
-				$times.=@filemtime($file);
+		if(Mage::getStoreConfigFlag('storeutilities_conf/general_settings/cache_bust')){
+			$times="";
+			foreach ($files as $file) {
+				if (file_exists($file)) {
+					$times.=@filemtime($file);
+				}
 			}
+			return md5($times);
 		}
-		return md5($times);
+		return "";
 	}
 }
