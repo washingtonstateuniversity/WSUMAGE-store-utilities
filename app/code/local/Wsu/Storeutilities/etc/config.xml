@@ -59,6 +59,31 @@
 				</observers>
 			</admin_system_config_changed_section_wsu_storeutilities_conf>
 		</events>
+		
+<!-- CUSTOM OPTION SECTION -->
+		<catalog>
+			<product>
+				<options>
+					<custom>
+						<groups>
+							<alteritemqty translate="label" module="wsu_storeutilities">
+								<label>Item Qty Option</label><render>wsu_storeutilities/adminhtml_catalog_product_edit_tab_options_type_alteritemqty</render> 
+								<types>
+									<alteritemqty translate="label" module="wsu_storeutilities">
+										<label>Item Qty Option</label>
+									</alteritemqty>
+								</types>
+							</alteritemqty>
+						</groups>
+					</custom>
+				</options>
+			</product>
+		</catalog>
+<!-- CUSTOM OPTION SECTION -->
+		
+		
+		
+		
 	</global>
 	<admin>
 		<layout>
@@ -76,6 +101,7 @@
 					</modules>
 				</args>
 			</adminhtml>
+<!-- DELETE ORDER SECTION -->			
 			<wsu_delete_orders>
                 <use>admin</use>
                 <args>
@@ -83,6 +109,7 @@
                     <frontName>wsu_delete_orders</frontName>
                 </args>
             </wsu_delete_orders>
+<!-- EOF DELETE ORDER SECTION -->
 		</routers>
 	</admin>
 	<frontend>
@@ -131,7 +158,7 @@
 			</updates>
 		</layout>
 		<events>
-
+<!-- DELETE ORDER SECTION -->
             <adminhtml_block_html_before>
                 <observers>
                     <wsu_delete_orders>
@@ -148,7 +175,7 @@
                     </wsu_delete_orders>
                 </observers>
             </sales_order_delete_after>
-
+<!-- EOF DELETE ORDER SECTION -->
 		
 		
 		
