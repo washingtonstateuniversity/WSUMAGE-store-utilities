@@ -39,4 +39,43 @@ class Wsu_Storeutilities_Model_Design_Package extends Mage_Core_Model_Design_Pac
         }
         return $file;
     }
+	
+	
+	
+	public function getMergedCssUrl($files){
+		$targetFilename = md5(implode(',', $files)) . '.css';
+		$targetDir = $this->_initMergerDir('css');
+		if (!$targetDir) {
+			return '';
+		}
+		if (Mage::helper('core')->mergeFiles($files, $targetDir . DS . $targetFilename, false, array($this, 'beforeMergeCss'), 'css')) {
+			return Mage::getBaseUrl('media') . 'css/' . $targetFilename.'?'.$this->getCacheBreaker($files);
+		}
+		return '';
+	}
+	
+	public function getMergedJsUrl($files){
+		$targetFilename = md5(implode(',', $files)) . '.js';
+		$targetDir = $this->_initMergerDir('js');
+		if (!$targetDir) {
+			return '';
+		}
+		if (Mage::helper('core')->mergeFiles($files, $targetDir . DS . $targetFilename, false, null, 'js')) {
+			return Mage::getBaseUrl('media') . 'js/' . $targetFilename.'?'.$this->getCacheBreaker($files);
+		}
+		return '';
+	}
+	
+	private function getCacheBreaker($files) {
+		if(Mage::getStoreConfigFlag('storeutilities_conf/general_settings/cache_bust')){
+			$times="";
+			foreach ($files as $file) {
+				if (file_exists($file)) {
+					$times.=@filemtime($file);
+				}
+			}
+			return md5($times);
+		}
+		return "";
+	}
 }
