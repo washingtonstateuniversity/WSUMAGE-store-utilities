@@ -1,0 +1,5 @@
+<?php
+
+class Wsu_Storeutilities_Block_Adminhtml_Catalog_Product_Edit_Tab_Options_Type_Alteritemqty extends Mage_Adminhtml_Block_Catalog_Product_Edit_Tab_Options_Type_Select {
+
+}

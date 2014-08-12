@@ -40,6 +40,11 @@
 					<design_package>Wsu_Storeutilities_Model_Design_Package</design_package>
 				</rewrite>
 			</core>
+			<!--<catalog>
+				<rewrite>
+					<product_option>Wsu_Storeutilities_Model_Product_Option</product_option>
+				</rewrite>
+			</catalog>-->
 		</models>
 		<resources>
 			<storeutilities_setup>
