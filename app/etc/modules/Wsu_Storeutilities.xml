@@ -4,6 +4,9 @@
     <Wsu_Storeutilities>
       <active>true</active>
       <codePool>local</codePool>
+		<depends>
+			<Mage_Core/>
+		</depends>
     </Wsu_Storeutilities>
   </modules>
 </config>
