@@ -2,6 +2,12 @@
 <layout version="0.1.0">
     <jQuery>
 		<reference name="head">
+			<action method="addItem">
+				<type>skin_js</type>
+				<name>Wsu/js/general_utilities.js</name>
+			</action>
+		
+		
 			<action method="addItem" ifconfig="storeutilities_conf/general_settings/adminjqueryuicss">
 				<type>cdn_css</type>
 				<name>//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.min.css</name>
