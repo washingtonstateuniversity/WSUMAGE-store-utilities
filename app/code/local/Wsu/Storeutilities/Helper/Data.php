@@ -20,10 +20,10 @@ class Wsu_Storeutilities_Helper_Data extends Mage_Core_Helper_Abstract {
 	}	
 	
 	
-    public function getConfig($field, $default = null) {
-        $value = Mage::getStoreConfig('localeselector/option/' . $field);
-        if (!isset($value) or trim($value) == '') {
-            return $default;
+    public function getConfig($path, $default = null) {
+        $value = Mage::getStoreConfig($path);
+        if ( empty($value) || !isset($value) || trim($value)=='' ) {
+            return is_null($default)?'':$default;
         } else {
             return $value;
         }
