@@ -115,6 +115,15 @@
                 </args>
             </wsu_delete_orders>
 <!-- EOF DELETE ORDER SECTION -->
+<!-- UNCANCEL ORDER SECTION -->			
+			<wsu_uncancel_orders>
+                <use>admin</use>
+                <args>
+                    <module>Wsu_Storeutilities</module>
+                    <frontName>wsu_uncancel_orders</frontName>
+                </args>
+            </wsu_uncancel_orders>
+<!-- EOF UNCANCEL ORDER SECTION -->
 		</routers>
 	</admin>
 	<frontend>
@@ -181,7 +190,24 @@
                 </observers>
             </sales_order_delete_after>
 <!-- EOF DELETE ORDER SECTION -->
-		
+<!-- UNCANCEL ORDER SECTION -->
+            <adminhtml_block_html_before>
+                <observers>
+                    <wsu_uncancel_orders>
+                        <class>wsu_storeutilities/observer</class>
+                        <method>addStatusUnCancelOptionToSelect</method>
+                    </wsu_uncancel_orders>
+                </observers>
+            </adminhtml_block_html_before>
+            <sales_order_delete_after>
+                <observers>
+                    <wsu_uncancel_orders>
+                      <class>wsu_storeutilities/observer</class>
+                      <method>setStatusUnCancel</method>
+                    </wsu_uncancel_orders>
+                </observers>
+            </sales_order_delete_after>
+<!-- EOF UNCANCEL ORDER SECTION -->		
 		
 		
 			<core_block_abstract_to_html_before>
