@@ -340,7 +340,14 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		$installer->addAttributeGroup($entityTypeId , $attributeSetId , $attribute_group_name);
 		return $attributeGroupId = getAttributeGroupId($attribute_group_name,$attribute_set_name);
 	}
-
+	public function deleteAttributeSet($attribute_set_name) {
+		$attributeSetId = getAttributeSetId($attribute_set_name);
+		if($attributeSetId) {
+			Mage::getModel('eav/entity_attribute_set')->setId($attributeSetId)->delete();
+			return array('Name'=>$attribute_set_name,'Id'=>$attributeSetId,'Msg'=>'Deleted successfully');
+		}
+		return array('Name'=>$attribute_set_name,'Id'=>$attributeSetId,'Msg'=>'Attribute Set not found');
+	}
 
 	/**
 	 * Create an atribute-set.
