@@ -319,29 +319,40 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 	}
 
 
-
-
+	public function getInstaller() {
+		return new Mage_Catalog_Model_Resource_Eav_Mysql4_Setup(‘core_setup’);
+	}
+	public function getEntityTypeId() {
+		return $entityTypeId = Mage::getModel(‘catalog/product’)->getResource()->getTypeId();
+	}
+	public function getAttributeSetId($attribute_set_name) {
+		$entityTypeId = $this->getEntityTypeId();
+		$installer = $this->getInstaller();
+		$attributeSetObject = new Varien_Object($installer->getAttributeSet($entityTypeId , $attribute_set_name));
+		$attributeSetId = $attributeSetObject->getAttributeSetId();
+		return $attributeSetId;
+	}
 	public function getAttributeGroupId($attribute_set_name, $attribute_group_name) {
-		$entityTypeId = getEntityTypeId();
-		$attributeSetId = getAttributeSetId($attribute_set_name);
-		$installer = getInstaller();//new Mage_Eav_Model_Entity_Setup('core_setup');
+		$entityTypeId = $this->getEntityTypeId();
+		$attributeSetId = $this->getAttributeSetId($attribute_set_name);
+		$installer = $this->getInstaller();//new Mage_Eav_Model_Entity_Setup('core_setup');
 		$attributeGroupObject = new Varien_Object($installer->getAttributeGroup($entityTypeId ,$attributeSetId,$attribute_group_name));
 		return $attributeGroupId = $attributeGroupObject->getAttributeGroupId();
 	}
 
 	public function createAttributeGroup($attribute_group_name , $attribute_set_name) {
-		$attributeGroupId = getAttributeGroupId($attribute_group_name,$attribute_set_name);
+		$attributeGroupId = $this->getAttributeGroupId($attribute_group_name,$attribute_set_name);
 		if(isset($attributeGroupId) && !empty($attributeGroupId)) {
 			return $attributeGroupId;
 		}
-		$entityTypeId = getEntityTypeId();
-		$installer = getInstaller();//new Mage_Eav_Model_Entity_Setup('core_setup');
+		$entityTypeId = $this->getEntityTypeId();
+		$installer = $this->getInstaller();//new Mage_Eav_Model_Entity_Setup('core_setup');
 		$attributeSetId = getAttributeSetId($attribute_set_name);
 		$installer->addAttributeGroup($entityTypeId , $attributeSetId , $attribute_group_name);
-		return $attributeGroupId = getAttributeGroupId($attribute_group_name,$attribute_set_name);
+		return $attributeGroupId = $this->getAttributeGroupId($attribute_set_name,$attribute_group_name);
 	}
 	public function deleteAttributeSet($attribute_set_name) {
-		$attributeSetId = getAttributeSetId($attribute_set_name);
+		$attributeSetId = $this->getAttributeSetId($attribute_set_name);
 		if($attributeSetId) {
 			Mage::getModel('eav/entity_attribute_set')->setId($attributeSetId)->delete();
 			return array('Name'=>$attribute_set_name,'Id'=>$attributeSetId,'Msg'=>'Deleted successfully');
