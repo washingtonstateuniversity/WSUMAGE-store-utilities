@@ -320,10 +320,10 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 
 
 	public function getInstaller() {
-		return new Mage_Catalog_Model_Resource_Eav_Mysql4_Setup(‘core_setup’);
+		return new Mage_Catalog_Model_Resource_Eav_Mysql4_Setup('core_setup');
 	}
 	public function getEntityTypeId() {
-		return $entityTypeId = Mage::getModel(‘catalog/product’)->getResource()->getTypeId();
+		return $entityTypeId = Mage::getModel('catalog/product')->getResource()->getTypeId();
 	}
 	public function getAttributeSetId($attribute_set_name) {
 		$entityTypeId = $this->getEntityTypeId();
