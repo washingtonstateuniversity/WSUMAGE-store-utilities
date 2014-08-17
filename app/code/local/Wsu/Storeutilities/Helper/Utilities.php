@@ -329,6 +329,17 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		return $attributeGroupId = $attributeGroupObject->getAttributeGroupId();
 	}
 
+	public function createAttributeGroup($attribute_group_name , $attribute_set_name) {
+		$attributeGroupId = getAttributeGroupId($attribute_group_name,$attribute_set_name);
+		if(isset($attributeGroupId) && !empty($attributeGroupId)) {
+			return $attributeGroupId;
+		}
+		$entityTypeId = getEntityTypeId();
+		$installer = getInstaller();//new Mage_Eav_Model_Entity_Setup('core_setup');
+		$attributeSetId = getAttributeSetId($attribute_set_name);
+		$installer->addAttributeGroup($entityTypeId , $attributeSetId , $attribute_group_name);
+		return $attributeGroupId = getAttributeGroupId($attribute_group_name,$attribute_set_name);
+	}
 
 
 	/**
