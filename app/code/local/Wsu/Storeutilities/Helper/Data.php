@@ -18,8 +18,7 @@ class Wsu_Storeutilities_Helper_Data extends Mage_Core_Helper_Abstract {
 		}
 		Mage::getSingleton('core/session')->addSuccess('Saved config cache.');
 	}	
-	
-	
+
     public function getConfig($path, $default = null) {
         $value = Mage::getStoreConfig($path);
         if ( empty($value) || !isset($value) || trim($value)=='' ) {
@@ -28,6 +27,9 @@ class Wsu_Storeutilities_Helper_Data extends Mage_Core_Helper_Abstract {
             return $value;
         }
     }
+	
+	
+	
 	/* get Cats that are from your store scope
 		@todo redo this //maybe it should let you pick the thing to get? ie: array('name','level')
 	*/

@@ -37,15 +37,9 @@ class Wsu_Storeutilities_Model_Observer{
     public function setStatusUnCancel($observer) {
         $order = $observer->getOrder();
 		$state = Mage::helper('storeutilities')->getConfig('storeutilities_conf/orders/uncancelstate',Mage_Sales_Model_Order::STATE_COMPLETE);
-        if ($order->getId()) {
-			$order->setState($state);
-			$order->setStatus($state);
-			$order->save();
-			foreach ($order->getAllItems() as $item) {
-				$item->setQtyCanceled(0);
-				$item->save();
-			}
-        }
+		if($order->getId()){
+
+		}
     }
     public function addStatusUnCancelOptionToSelect($observer){
         if (self::SALES_ORDER_GRID_NAME == $observer->getEvent()->getBlock()->getId()) {
