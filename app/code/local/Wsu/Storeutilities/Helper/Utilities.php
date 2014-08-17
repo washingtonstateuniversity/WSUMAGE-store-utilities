@@ -318,6 +318,19 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		return false;
 	}
 
+
+
+
+	public function getAttributeGroupId($attribute_set_name, $attribute_group_name) {
+		$entityTypeId = getEntityTypeId();
+		$attributeSetId = getAttributeSetId($attribute_set_name);
+		$installer = getInstaller();//new Mage_Eav_Model_Entity_Setup('core_setup');
+		$attributeGroupObject = new Varien_Object($installer->getAttributeGroup($entityTypeId ,$attributeSetId,$attribute_group_name));
+		return $attributeGroupId = $attributeGroupObject->getAttributeGroupId();
+	}
+
+
+
 	/**
 	 * Create an atribute-set.
 	 *
