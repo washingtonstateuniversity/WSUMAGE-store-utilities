@@ -64,11 +64,9 @@ class Wsu_Storeutilities_Model_Observer{
 		){
 			$_block = $observer->getBlock();
 			$_type = $_block->getType();
-			var_dump( $_type);	
+			var_dump($_type);//@todo change this out to append to the html at this point.
 		}
 	}
-
-
 
 	public function cleanConfigCache(){
 		Mage::helper('storeutilities')->cleanConfigCache();
