@@ -1,9 +1,12 @@
 <?xml version="1.0"?>
 <config>
-  <modules>
-    <Wsu_Storeutilities>
-      <active>true</active>
-      <codePool>local</codePool>
-    </Wsu_Storeutilities>
-  </modules>
+	<modules>
+		<Wsu_Storeutilities>
+			<active>true</active>
+			<codePool>local</codePool>
+			<depends>
+				<Mage_Core/>
+			</depends>
+		</Wsu_Storeutilities>
+	</modules>
 </config>

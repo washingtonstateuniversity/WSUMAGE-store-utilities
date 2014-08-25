@@ -193,7 +193,7 @@ class Wsu_Storeutilities_Adminhtml_Catalog_ProductController extends Mage_Adminh
 			$this->_getSession()->addSuccess($this->__('Total of %d record(s) were successfully updated', count($affectedProductIds)));
 		}
 		catch (Exception $e) {
-			var_dump($e->getMessage());die();
+			//var_dump($e->getMessage());die();
 			$this->_getSession()->addException($e, $e->getMessage());
 		}
 		$this->_redirect('adminhtml/catalog_product/index/', array());

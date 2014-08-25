@@ -34,8 +34,26 @@ class Wsu_Storeutilities_Model_Observer{
         }
     }
 
+    public function setStatusUnCancel($observer) {
+        $order = $observer->getOrder();
+		$state = Mage::helper('storeutilities')->getConfig('storeutilities_conf/orders/uncancelstate',Mage_Sales_Model_Order::STATE_COMPLETE);
+		if($order->getId()){
 
-
+		}
+    }
+    public function addStatusUnCancelOptionToSelect($observer){
+        if (self::SALES_ORDER_GRID_NAME == $observer->getEvent()->getBlock()->getId()) {
+            $massBlock = $observer->getEvent()->getBlock()->getMassactionBlock();
+			$state = Mage::helper('storeutilities')->getConfig('storeutilities_conf/orders/uncancelstate',Mage_Sales_Model_Order::STATE_COMPLETE);
+            if ($massBlock) {
+                $massBlock->addItem('wsu_uncancel_orders', array(
+                    'label'=> Mage::helper('core')->__('Un-Cancel'),
+                    'url'  => Mage::getUrl('wsu_uncancel_orders', array('_secure'=>true)),
+                    'confirm' => Mage::helper('core')->__('Are you sure to set the status from CANCELED to '.$state.' the selected orders?'),
+                ));
+            }
+        }
+    }
 
 
 
@@ -46,11 +64,9 @@ class Wsu_Storeutilities_Model_Observer{
 		){
 			$_block = $observer->getBlock();
 			$_type = $_block->getType();
-			var_dump( $_type);	
+			var_dump($_type);//@todo change this out to append to the html at this point.
 		}
 	}
-
-
 
 	public function cleanConfigCache(){
 		Mage::helper('storeutilities')->cleanConfigCache();
