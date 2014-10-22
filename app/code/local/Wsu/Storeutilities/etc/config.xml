@@ -28,6 +28,7 @@
 			<core>
 				<rewrite>
 					<data>Wsu_Storeutilities_Helper_Core_Data</data>
+					<http>Wsu_Storeutilities_Helper_Cloudflarehttp</http>
 				</rewrite>
 			</core>
 		</helpers>
