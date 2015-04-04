@@ -2,6 +2,12 @@
 
 class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 
+	/**
+	 * generate a md5 hash of a random number
+	 *
+	 * @deprecated 0.1.0
+	 * @return string
+	 */
 	public function getUniqueCode($length = ""){
 		$code = md5(uniqid(rand(), true));
 		if ($length != ""){
@@ -10,6 +16,11 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 			return $code;
 		}
 	}
+	/**
+	 * take file and process into an array
+	 *
+	 * @return array
+	 */
 	public function csv_to_array( $filename='', $delimiter=',', $enclosure = '"', $escape = "\\" ){
 		 if(!file_exists($filename) || !is_readable($filename)){
 			 return FALSE;
@@ -29,8 +40,11 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		 return $data;
 	}
 	
-	//this will take an array (maybe later an object) a merge grafting the new over the old.  
-	// it will apply in order ie: extend($old,$newer,$newest,$lastApplied) 
+	/**
+	 * sudo match  of jQuery's $.extend()
+	 *
+	 * @return array
+	 */
 	public function extend($old,$new){
 		//add error check $old,$new
 		$args = func_get_args();
@@ -51,8 +65,21 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 	
 	//this should maybe be not based on the cats but the
 	//store it's on, ie pull from Mage::getModel('catalog/product')?
+	/**
+	 * move all products of into a category base on args
+	 *
+	 * @since 0.1.0
+	 *
+	 *
+	 * @param int $website
+	 * @param int $store
+	 * @param string $rootcat
+	 * @param object $children Optional
+	 */
 	public function moveStoreProducts($website,$store,$rootcat,$children=null){
-		if($children==null)$children = Mage::getModel('catalog/category')->getCategories($rootcat);
+		if($children==null){
+			$children = Mage::getModel('catalog/category')->getCategories($rootcat);
+		}
 		foreach ($children as $category) {
 			echo $category->getName();
 			$cat_id=$category->getId();
@@ -77,6 +104,15 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		}
 	}
 	
+	/**
+	 * add a category by name with attr if provided
+	 *
+	 * @since 0.1.0
+	 *
+	 *
+	 * @param string $categoryName
+	 * @param array $attr Optional. Description.
+	 */
 	public function make_category($categoryName,$attr=array()){
 		$category = Mage::getModel('catalog/category');
 		$category->setStoreId(0); // No store is assigned to this category
@@ -106,6 +142,16 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		}
 		return $rcatId;
 	}
+	
+	/**
+	 * add a website by name with attr if provided
+	 *
+	 * @since 0.1.0
+	 *
+	 *
+	 * @param string $site
+	 * @return Boolean|int false on fail, id on pass
+	 */
 	public function make_website($site){
 		$website = Mage::getModel('core/website');
 		$website->load($site['code']);
@@ -129,6 +175,10 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		}
 		
 	}
+	
+	/**
+	 * make_storeGroup
+	 */
 	public function make_storeGroup($store,$url,$websiteId,$rootCategory){
 		$storeGroup = Mage::getModel('core/store_group');
 		$storeGroupName = $store['name'];
@@ -167,6 +217,10 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 			return false;
 		}
 	}
+	
+	/**
+	 * reparentCategory
+	 */
 	public function reparentCategory($rootCategory,$movingcat){
 		$rcatId=$rootCategory;
 		if($rcatId>0){
@@ -187,7 +241,12 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 			}
 		}
 	}
-	//this needs to be abstracted more
+
+	/**
+	 * make_store
+	 * 
+	 * @todo this needs to be abstracted more
+	 */
 	public function make_store($webSiteId,$storeGroupId,$view){
 		$storecode=$view['code'];
 		$store = Mage::getModel('core/store');
@@ -224,6 +283,9 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		}
 	}
 	
+	/**
+	 * createCmsPage
+	 */
 	public function createCmsPage($storeids,$params=array()){
 		$default = array(
 			'title' => 'Store title',
@@ -241,6 +303,9 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		return true;
 	}
 	
+	/**
+	 * createCat
+	 */
 	public function createCat($storeCodeId,$rootcatID,$cats=array()){
 		foreach($cats as $url=>$catInfo){
 			$category = Mage::getModel('catalog/category');
@@ -262,7 +327,10 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 			}
 		}
 	}	
-
+	
+	/**
+	 * initFromSkeleton
+	 */
     public function initFromSkeleton($skeletonId,$set,$stopGroup=null,$stopAttr=null) {
         $groups = Mage::getModel('eav/entity_attribute_group')
             ->getResourceCollection()
@@ -272,7 +340,10 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
         $newGroups = $this->filterGroups($set,$groups,$stopGroup,$stopAttr);
         return $newGroups;
     }
-
+	
+	/**
+	 * filterGroups
+	 */
     public function filterGroups($set,$groups,$stopGroup=null,$stopAttr=null){
         $newGroups = array();
         foreach ($groups as $group) {
@@ -306,6 +377,10 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		//var_dump($newGroups);
         return $newGroups; 
     }
+		
+	/**
+	 * checkForWebsite
+	 */
 	public function checkForWebsite($code=NULL){
 		if($code!=NULL){
 			$website = Mage::getConfig()->getNode('websites/'.$code);
@@ -316,13 +391,23 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		return false;
 	}
 
-
+	/**
+	 * getInstaller
+	 */
 	public function getInstaller() {
 		return new Mage_Catalog_Model_Resource_Eav_Mysql4_Setup('core_setup');
 	}
+
+	/**
+	 * getEntityTypeId
+	 */
 	public function getEntityTypeId() {
 		return $entityTypeId = Mage::getModel('catalog/product')->getResource()->getTypeId();
-	}
+	}	
+
+	/**
+	 * getAttributeSetId
+	 */
 	public function getAttributeSetId($attribute_set_name) {
 		$entityTypeId = $this->getEntityTypeId();
 		$installer = $this->getInstaller();
@@ -330,6 +415,10 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		$attributeSetId = $attributeSetObject->getAttributeSetId();
 		return $attributeSetId;
 	}
+	
+	/**
+	 * getAttributeGroupId
+	 */
 	public function getAttributeGroupId($attribute_set_name, $attribute_group_name) {
 		$entityTypeId = $this->getEntityTypeId();
 		$attributeSetId = $this->getAttributeSetId($attribute_set_name);
@@ -337,7 +426,10 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		$attributeGroupObject = new Varien_Object($installer->getAttributeGroup($entityTypeId ,$attributeSetId,$attribute_group_name));
 		return $attributeGroupId = $attributeGroupObject->getAttributeGroupId();
 	}
-
+	
+	/**
+	 * createAttributeGroup
+	 */
 	public function createAttributeGroup($attribute_group_name , $attribute_set_name) {
 		$attributeGroupId = $this->getAttributeGroupId($attribute_group_name,$attribute_set_name);
 		if(isset($attributeGroupId) && !empty($attributeGroupId)) {
@@ -349,6 +441,10 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		$installer->addAttributeGroup($entityTypeId , $attributeSetId , $attribute_group_name);
 		return $attributeGroupId = $this->getAttributeGroupId($attribute_set_name,$attribute_group_name);
 	}
+	
+	/**
+	 * deleteAttributeSet
+	 */
 	public function deleteAttributeSet($attribute_set_name) {
 		$attributeSetId = $this->getAttributeSetId($attribute_set_name);
 		if($attributeSetId) {
@@ -362,8 +458,10 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 	 * Create an atribute-set.
 	 *
 	 * For reference, see Mage_Adminhtml_Catalog_Product_SetController::saveAction().
-	 * @
-	 * 
+	 * @param string $setName
+	 * @param string|int $copyGroupsFromID 
+	 * @param string|int $stopGroup
+	 * @param array|int $stopAttr
 	 * 
 	 * 
 	 * @return array|false
@@ -447,11 +545,11 @@ die();            */
 	 * Create an attribute.
 	 *
 	 * For reference, see Mage_Adminhtml_Catalog_Product_AttributeController::saveAction().
-	 * @lableText : string -
-	 * @attributeCode : string -
-	 * @values : string|-1 -
-	 * @productTypes : string|-1 - A CSV like "simple, grouped, configurable, virtual, bundle, downloadable, giftcard"
-	 * @setInfo : array|-1 -
+	 * @param string $lableText
+	 * @param string $attributeCode
+	 * @param string|int $values 
+	 * @param string|int $productTypesA CSV like "simple, grouped, configurable, virtual, bundle, downloadable, giftcard"
+	 * @param array|int $setInfo
 	 * 
 	 * @return int|false
 	 */
