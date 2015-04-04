@@ -12,14 +12,14 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 		if ($length != "") return substr($code, 0, $length);
 		else return $code;
 	}
-	public function csv_to_array($filename='', $delimiter=','){
-		 if(!file_exists($filename) || !is_readable($filename))
+	public function csv_to_array( $filename='', $delimiter=',', $enclosure = '"', $escape = "\\" ){
+		 if(!file_exists($filename) || !is_readable($filename)){
 			 return FALSE;
-	
+		 }
 		 $header = NULL;
 		 $data = array();
 		 if (($handle = fopen($filename, 'r')) !== FALSE){
-			 while (($row = fgetcsv($handle,1000, $delimiter)) !== FALSE){
+			 while (($row = fgetcsv($handle,1000, $delimiter,$enclosure,$escape)) !== FALSE){
 				 if(!$header){
 					 $header = $row;
 				 }else{
