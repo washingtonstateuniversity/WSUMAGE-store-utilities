@@ -420,6 +420,11 @@ class Wsu_Storeutilities_Helper_Utilities extends Mage_Core_Helper_Abstract {
 	 * getAttributeGroupId
 	 */
 	public function getAttributeGroupId($attribute_set_name, $attribute_group_name) {
+		$attribute_set_id = $this->getAttributeSetId($attribute_set_name);
+		$setup = new Mage_Eav_Model_Entity_Setup('core_setup');
+		return $setup->getAttributeGroupId('catalog_product', $attribute_set_id, $attribute_group_name);
+		
+		
 		$entityTypeId = $this->getEntityTypeId();
 		$attributeSetId = $this->getAttributeSetId($attribute_set_name);
 		$installer = $this->getInstaller();//new Mage_Eav_Model_Entity_Setup('core_setup');
@@ -570,11 +575,13 @@ die();            */
 		if($productTypes === -1) {
 			$productTypes = array();
 		}
- 
-		if($setInfo !== -1 && !empty($setInfo)){//(isset($setInfo['SetID']) == false || isset($setInfo['GroupID']) == false)) {
+ 		//var_dump($setInfo);
+		if($setInfo === -1 || empty($setInfo)){//(isset($setInfo['SetID']) == false || isset($setInfo['GroupID']) == false)) {
+			//die('tried to retrun false');
 			Mage::log("Failed provide both the set-ID and the group-ID of the attribute-set", Zend_Log::ERR);
+			
 			return false;
-		}
+		}//die('made it');
 
 		//>>>> Build the data structure that will define the attribute. See
 		//     Mage_Adminhtml_Catalog_Product_AttributeController::saveAction().
@@ -630,19 +637,17 @@ die();            */
 		$model = Mage::getModel('catalog/resource_eav_attribute');
  
 		$model->addData($data);
- 
-		if($setInfo !== -1) {
-			if(isset($setInfo['SetID'])){
-				$model->setAttributeSetId($setInfo['SetID']);
-				$model->setAttributeGroupId($setInfo['GroupID']);
-			}else{
-				foreach($setInfo as $set){
-					$model->setAttributeSetId($set['SetID']);
-					$model->setAttributeGroupId($set['GroupID']);
-				}
+
+		if(isset($setInfo['SetID'])){
+			$model->setAttributeSetId($setInfo['SetID']);
+			$model->setAttributeGroupId($setInfo['GroupID']);
+		}else{
+			foreach($setInfo as $set){
+				$model->setAttributeSetId($set['SetID']);
+				$model->setAttributeGroupId($set['GroupID']);
 			}
 		}
- 
+
 		$entityTypeID = Mage::getModel('eav/entity')->setType('catalog_product')->getTypeId();
 		$model->setEntityTypeId($entityTypeID);
  
