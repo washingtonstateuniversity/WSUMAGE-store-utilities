@@ -680,7 +680,7 @@ die();            */
 	 * @return string html attribute or empty string
 	 */
 	public function checked( $checked, $current = true, $echo = true ) {
-		return __checked_selected_helper( $checked, $current, $echo, 'checked' );
+		return $this->__checked_selected_helper( $checked, $current, $echo, 'checked' );
 	}
 	
 	/**
@@ -696,7 +696,7 @@ die();            */
 	 * @return string html attribute or empty string
 	 */
 	public function selected( $selected, $current = true, $echo = true ) {
-		return __checked_selected_helper( $selected, $current, $echo, 'selected' );
+		return $this->__checked_selected_helper( $selected, $current, $echo, 'selected' );
 	}
 	
 	/**
@@ -712,7 +712,7 @@ die();            */
 	 * @return string html attribute or empty string
 	 */
 	public function disabled( $disabled, $current = true, $echo = true ) {
-		return __checked_selected_helper( $disabled, $current, $echo, 'disabled' );
+		return $this->__checked_selected_helper( $disabled, $current, $echo, 'disabled' );
 	}
 	
 	/**
