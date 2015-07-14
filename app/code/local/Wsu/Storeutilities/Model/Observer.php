@@ -74,10 +74,13 @@ class Wsu_Storeutilities_Model_Observer{
 
 	public function admin_simpleHtmlMinify($observer){
 		if(Mage::getStoreConfig('storeutilities_conf/html/minify_admin_html_output')){
-			$response = $observer->getResponse(); 
-			$html     = $response->getBody(); 
-			$html = $this->quicktmlMinify($html);
-			$response->setBody($html); 
+			$controller = Mage::app()->getRequest()->getControllerName();
+			if($controller !== "export"){
+				$response = $observer->getResponse(); 
+				$html     = $response->getBody(); 
+				$html = $this->quicktmlMinify($html);
+				$response->setBody($html); 
+			}
 		}
 	}
     public function simpleHtmlMinify($observer) {
