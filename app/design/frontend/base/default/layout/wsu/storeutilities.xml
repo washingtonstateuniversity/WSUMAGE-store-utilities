@@ -17,12 +17,12 @@
 			</action>
 			<action method="addItem" ifconfig="storeutilities_conf/general_settings/fejquery">
 				<type>cdn_js</type>
-				<name>//code.jquery.com/jquery-1.11.1.min.js</name>
+				<name>//code.jquery.com/jquery-1.11.3.min.js</name>
 				<params/>
 				<if/>
 				<cond/>
 				<window_obj>jQuery</window_obj>
-				<local_path>/js/jquery-1.11.1.min.js</local_path>
+				<local_path>/js/jquery-1.11.3.min.js</local_path>
 			</action>
 			<action method="addItem" ifconfig="storeutilities_conf/general_settings/fejqueryui">
 				<type>cdn_js</type>
