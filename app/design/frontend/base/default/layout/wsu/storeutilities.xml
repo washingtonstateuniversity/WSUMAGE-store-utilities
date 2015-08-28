@@ -13,7 +13,7 @@
 			</action>
 			<action method="addItem">
 				<type>cdn_css</type>
-				<name>//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css</name>
+				<name>//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css</name>
 			</action>
 			<action method="addItem" ifconfig="storeutilities_conf/general_settings/fejquery">
 				<type>cdn_js</type>
