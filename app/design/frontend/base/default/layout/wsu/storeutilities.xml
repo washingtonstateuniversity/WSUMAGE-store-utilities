@@ -2,6 +2,13 @@
 <layout version="0.1.0">
     <jQuery>
 		<reference name="head">
+		
+		<!-- remove the rwd defaults -->
+			<action method="removeItem" ifconfig="storeutilities_conf/general_settings/fejquery"><type>js</type><name>lib/jquery/jquery-1.10.2.min.js</name></action>
+			<action method="removeItem" ifconfig="storeutilities_conf/general_settings/fejquery"><type>skin_js</type><name>lib/jquery/jquery-1.10.2.min.js</name></action>
+			<action method="removeItem" ifconfig="storeutilities_conf/general_settings/fejquery"><type>skin_js</type><name>lib/jquery-1.10.2.min.js</name></action>
+			<action method="removeItem" ifconfig="storeutilities_conf/general_settings/fejquery"><type>js</type><name>lib/jquery/noconflict.js</name></action>
+
 			<action method="addItem" ifconfig="storeutilities_conf/general_settings/fejqueryuicss">
 				<type>cdn_css</type>
 				<name>//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css</name>
