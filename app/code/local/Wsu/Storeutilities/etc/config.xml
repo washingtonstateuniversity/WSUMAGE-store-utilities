@@ -172,6 +172,16 @@
 				</wsu_storeutilities>
 			</updates>
 		</layout>
+        <cms>
+          <browser>
+            <extensions>
+              <allowed>
+                <pdf>1</pdf>
+                <epub>1</epub>
+              </allowed>
+            </extensions>
+          </browser>
+        </cms>
 		<events>
 <!-- DELETE ORDER SECTION -->
             <adminhtml_block_html_before>
